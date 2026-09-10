@@ -123,4 +123,28 @@ v0.3-feature-engineering
 ### Checkpoint
 v0.4-isolation-forest
 
+---
+
+## 2026-09-10 (Module 4B)
+
+### Added
+- `backend/engine/autoencoder.py`: Deep neural reconstruction Autoencoder anomaly engine:
+  - Implemented `PyTorchAutoencoderNet` (9 -> 32 -> 16 -> 8 bottleneck -> 16 -> 32 -> 9) in PyTorch 2.14.0+cpu with scikit-learn MLPRegressor fallback
+  - `MPAutoencoder`: Automated training, loss convergence tracking (1.0050 -> 0.1437), threshold calibration (92nd percentile = 0.3743), and $[0.0, 1.0]$ score normalization
+  - `explain_mp()`: Feature-by-feature scaled reconstruction attribution
+  - Serialization: full model state and network state dictionary serialization with `joblib`
+- Installed `torch` (2.14.0+cpu) and `networkx` (3.6.1)
+- `tests/test_autoencoder.py`: 26-test comprehensive validation suite (26/26 PASS)
+- `docs/modules/module-04b-autoencoder.md`: Full documentation of Module 4B
+
+### Verified
+- Monotonic loss reduction and convergence
+- Exact score reproducibility ($\Delta < 10^{-5}$) across serialization cycles
+- Anomaly scores strictly bounded in $[0.0, 1.0]$ with 0 NaNs or Infs
+- Top-decile anomaly separation (> 2x median reconstruction MSE)
+
+### Checkpoint
+v0.5-autoencoder
+
+
 

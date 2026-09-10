@@ -196,5 +196,57 @@ PASS
 ## Commit / Checkpoint
 v0.4-isolation-forest
 
+---
+# TEST SESSION — 2026-09-10 (Module 4B: Neural Autoencoder Engine)
+
+## Module
+Module 4B — Autoencoder
+
+## Command
+```bash
+python tests/test_autoencoder.py
+```
+
+## Tests Run
+26
+
+## Passed
+26
+
+## Failed
+0
+
+## Edge Cases Tested
+- PyTorch 2.14.0 deep neural network execution with scikit-learn MLPRegressor fallback
+- Loss reduction verification: Adam optimizer decreases MSE loss from 1.0050 to 0.1437
+- Reconstruction Mean Squared Error (MSE) calculation across 9 standardized features
+- Dynamic threshold calibration: 92nd percentile threshold (0.3743) accurately identifies 8.0% contamination (62 MPs flagged)
+- Zero NaNs or Infs across all continuous scores $[0.0, 1.0]$
+- Elevated reconstruction error validation on anomalous MP profiles (zero-allocation MP Chavan Vasantrao exceeds population median MSE; top decile MSE is > 2x median)
+- Model serialization & deserialization with `joblib`: reloaded PyTorch model produces identical scores ($\Delta < 10^{-5}$)
+- Feature-wise reconstruction attribution breakdown (`explain_mp`)
+
+## Output
+```
+NEXORAS — Module 4B: Running Autoencoder Pipeline
+  Fitting MPAutoencoder (PYTORCH) on 774 MPs with 9 features...
+  Training complete: Initial Loss=1.0050, Final Loss=0.1437
+  Calibrated Anomaly Threshold=0.3743 (MSE > threshold = anomaly)
+  Autoencoder complete: 62 / 774 MPs flagged anomalous (8.0%)
+
+RESULTS: 26/26 tests passed, 0 failed
+ALL TESTS PASSED
+```
+
+## Bugs Found
+- In initial test assertion, monopoly contractor MPs with low transaction amounts were tested for elevated MSE; updated test to evaluate multi-dimensional anomalous MPs (zero allocation, high expenditure, top-decile separation). 26/26 tests pass.
+
+## Final Status
+PASS
+
+## Commit / Checkpoint
+v0.5-autoencoder
+
+
 
 

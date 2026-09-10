@@ -13,16 +13,16 @@ IN PROGRESS
 Phase 2 — AI / ML Anomaly Engines
 
 ## Current Module
-Module 4B — Autoencoder
+Module 5 — Anomaly Ensemble
 
 ## Current Task
-Implement deep neural reconstruction error Autoencoder in PyTorch for non-linear anomaly detection on MP feature vectors
+Combine Isolation Forest (Module 4A) and Neural Autoencoder (Module 4B) into an explainable multi-signal anomaly ensemble
 
 ## Last Completed Module
-Module 4A — Isolation Forest
+Module 4B — Autoencoder
 
 ## Last Stable Checkpoint
-v0.4-isolation-forest (2026-09-10)
+v0.5-autoencoder (2026-09-10)
 
 ## Repository Structure
 ```
@@ -63,7 +63,8 @@ CSV Dataset → Ingestion → Cleaning → Feature Engineering
 
 ## Implemented Models
 - Model 1 (Isolation Forest): COMPLETE (MPIsolationForest + WorkIsolationForest, 25/25 PASS)
-- Model 2 (Autoencoder): IN PROGRESS next
+- Model 2 (Autoencoder): COMPLETE (MPAutoencoder in PyTorch, 26/26 PASS)
+- Model 3 (Anomaly Ensemble): IN PROGRESS next
 
 ## Backend
 - `backend/ingestion/loader.py`: Raw CSV loading, snake_case normalization, date parsing
@@ -71,6 +72,7 @@ CSV Dataset → Ingestion → Cleaning → Feature Engineering
 - `backend/cleaning/cleaner.py`: Deduplication, missing value imputation, string stripping
 - `backend/features/builder.py`: Multi-grain feature engineering (MP, work, vendor)
 - `backend/engine/isolation_forest.py`: MPIsolationForest & WorkIsolationForest anomaly models
+- `backend/engine/autoencoder.py`: Deep neural reconstruction Autoencoder in PyTorch
 
 ## Frontend
 Not started
@@ -84,9 +86,10 @@ Not decided — SQLite for MVP, PostgreSQL for production
 - Module 2: Data Cleaning & Validation (25/25 PASS, checkpoint: v0.2-data-cleaning)
 - Module 3: Feature Engineering (27/27 PASS, checkpoint: v0.3-feature-engineering)
 - Module 4A: Isolation Forest (25/25 PASS, checkpoint: v0.4-isolation-forest)
+- Module 4B: Autoencoder (26/26 PASS, checkpoint: v0.5-autoencoder)
 
 ## Modules In Progress
-- Module 4B: Autoencoder
+- Module 5: Anomaly Ensemble
 
 ## Blocked Modules
 None
@@ -110,14 +113,15 @@ None
 - Module 2 test suite (`tests/test_cleaning.py`): 25/25 PASS
 - Module 3 test suite (`tests/test_features.py`): 27/27 PASS
 - Module 4A test suite (`tests/test_isolation_forest.py`): 25/25 PASS
+- Module 4B test suite (`tests/test_autoencoder.py`): 26/26 PASS
 
 ## Next 3 Actions
-1. Implement Module 4B (`backend/engine/autoencoder.py`): build PyTorch/scikit-learn deep reconstruction Autoencoder
-2. Create unit tests (`tests/test_autoencoder.py`) verifying loss reduction, reconstruction MSE calculation, and thresholding
-3. Document in `docs/modules/module-04b-autoencoder.md`
+1. Implement Module 5 (`backend/engine/ensemble.py`): combine Isolation Forest & Neural Autoencoder scores with agreement scoring
+2. Create unit tests (`tests/test_ensemble.py`) verifying calibrated ensemble scores, signal disagreement identification, and confidence intervals
+3. Document in `docs/modules/module-05-anomaly-ensemble.md`
 
 ## EXACT NEXT TASK
-Implement Module 4B — Autoencoder: build neural compression-reconstruction architecture, verify MSE loss minimization on normal data, and test thresholded anomaly detection.
+Implement Module 5 — Anomaly Ensemble: combine Isolation Forest and Autoencoder scores, generate multi-model consensus flags, and expose dual-signal explainability.
 
 ## Last Updated
-2026-09-10T19:56 IST
+2026-09-10T20:14 IST

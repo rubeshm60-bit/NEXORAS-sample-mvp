@@ -7,8 +7,8 @@
 | Module 2 — Data Cleaning & Validation | COMPLETE | 25/25 PASS | v0.2-data-cleaning | — |
 | Module 3 — Feature Engineering | COMPLETE | 27/27 PASS | v0.3-feature-engineering | — |
 | Module 4A — Isolation Forest | COMPLETE | 25/25 PASS | v0.4-isolation-forest | — |
-| Module 4B — Autoencoder | NOT STARTED | — | — | After Module 4A |
-| Module 5 — Anomaly Ensemble | NOT STARTED | — | — | After 4A + 4B |
+| Module 4B — Autoencoder | COMPLETE | 26/26 PASS | v0.5-autoencoder | — |
+| Module 5 — Anomaly Ensemble | NOT STARTED | — | — | After Module 4B |
 | Module 6 — XGBoost (Supervised) | NOT STARTED | — | — | Feasibility TBD |
 | Module 7 — Vendor Network Intelligence | NOT STARTED | — | — | After Module 3 |
 | Module 8 — NetworkX Graph Engine | NOT STARTED | — | — | After Module 7 |

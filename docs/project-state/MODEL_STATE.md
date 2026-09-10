@@ -46,36 +46,39 @@ Module 4B — Autoencoder (Neural Reconstruction Error Engine)
 ## Model 2 — Autoencoder
 
 ### Status
-NOT STARTED
+COMPLETE (Module 4B, Checkpoint: v0.5-autoencoder)
 
 ### Purpose
-Neural network trained on normal data. High reconstruction error = anomaly. Detects unusual feature combinations.
+Neural compression-reconstruction architecture trained to detect non-linear multi-feature irregularities via reconstruction Mean Squared Error (MSE).
 
-### Architecture (Planned)
+### Architecture (Implemented in PyTorch)
 ```
-Input(N features) → Dense(64) → Dense(32) → Dense(16) [bottleneck]
-→ Dense(32) → Dense(64) → Output(N features)
-Loss = MSE(reconstructed, actual)
+Input(9 features) -> Linear(9, 32) -> ReLU -> Linear(32, 16) -> ReLU -> Linear(16, 8) [Bottleneck]
+                  -> Linear(8, 16) -> ReLU -> Linear(16, 32) -> ReLU -> Linear(32, 9) [Reconstruction]
+Optimization: Adam (lr=0.005, weight_decay=1e-5), Criterion: MSELoss
 ```
 
-### Input Features (Planned)
-Same as Isolation Forest (normalized)
+### Input Features (9 normalized via StandardScaler)
+`utilization_rate`, `unspent_ratio`, `completion_rate`, `vendor_hhi`, `top_vendor_share`, `pending_payment_ratio`, `avg_transaction_size`, `image_compliance_rate`, `avg_spend_per_vendor`
 
-### Threshold
-Percentile of reconstruction error on training set (TBD)
+### Threshold & Calibration
+- Threshold: 92nd percentile of training reconstruction error (0.3743 for PyTorch model)
+- Contamination target: 8.0% (flags 62 anomalous MPs)
+- Normalized continuous anomaly score: $[0.0, 1.0]$ based on min/max training MSE
 
-### Model File
-`backend/engine/autoencoder.pt` (planned)
+### Training Performance
+- Initial Loss: 1.0050
+- Final Loss: 0.1437 (verified monotonic convergence)
+- Backend: PyTorch 2.14.0+cpu with scikit-learn MLPRegressor fallback
 
-### Version
-Not trained
-
-### ⚠️ IMPORTANT
-Do NOT silently remove the Autoencoder. It is a required component.
-If blocked: Record STATUS: BLOCKED with reason and fallback plan.
+### Evaluation & Test Results
+- Unit tests: 26/26 PASS in `tests/test_autoencoder.py`
+- Exact reproducibility: $\Delta < 10^{-5}$ across save/load cycles
+- Explainability: `explain_mp()` produces feature-by-feature scaled reconstruction errors
 
 ### Next Action
-Build after Module 3 (Feature Engineering) is complete
+Module 5 — Anomaly Ensemble (combining Isolation Forest and Autoencoder)
+
 
 ---
 
