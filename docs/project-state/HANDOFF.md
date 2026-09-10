@@ -12,103 +12,94 @@ NEXORAS
 SIH26102 — AI-powered anomaly, fraud and inefficiency detection in MPLAD Scheme
 
 ## CURRENT STATUS
-**Module 2 — Data Cleaning & Validation: COMPLETE** (25/25 tests pass)
-Ready to begin Module 3 — Feature Engineering.
+**Module 3 — Feature Engineering: COMPLETE** (27/27 tests pass)
+Ready to begin Module 4A — Isolation Forest.
 
 ## CURRENT MODULE
-Module 2 (COMPLETE) → Starting Module 3 — Feature Engineering
+Module 3 (COMPLETE) → Starting Module 4A — Isolation Forest
 
 ## CURRENT TASK
-Design and construct multi-view feature vectors across cleaned tables:
-1. Financial ratios (utilization, velocity, expenditure vs recommendation gap)
-2. Vendor concentration index (Herfindahl-Hirschman Index per MP / constituency)
-3. Project delivery speed & timeline deviation features
-4. Cost deviation relative to work category median
+Implement unsupervised Isolation Forest anomaly detection engine (`backend/engine/isolation_forest.py`) on MP-level features to generate continuous anomaly scores and binary outlier classifications.
 
 ## WHAT WAS JUST COMPLETED
-- Module 2 — Data Cleaning & Validation
-- Deduplicated `expenditures` (108,695 -> 76,313 unique rows, 32,382 duplicates removed)
-- Imputed missing `work_description` values with `"[No description]"`
-- Standardized missing categories to `"Uncategorized"`
-- Verified financial validity (0 negative amounts)
-- 25/25 unit tests pass in `tests/test_cleaning.py`
-- Documented in `docs/modules/module-02-data-cleaning.md`
-- Checkpoint: `v0.2-data-cleaning`
+- Module 3 — Feature Engineering
+- Constructed 3 unified feature matrices via `backend/features/builder.py`:
+  - `mp_features` (774 rows × 33 cols): financial utilization, unspent ratios, vendor HHI, top vendor capture rate, execution quality
+  - `work_features` (44,028 rows × 19 cols): category baselines, cost deviation Z-scores, ratio to median, extreme outlier flags
+  - `vendor_features` (28,206 rows × 13 cols): total payout, multi-MP presence flags, in-progress payment rates
+- Verified 0 NaNs or Infs across all numeric feature series
+- 27/27 unit tests pass in `tests/test_features.py`
+- Documented in `docs/modules/module-03-feature-engineering.md`
+- Checkpoint: `v0.3-feature-engineering`
 
-## FILES CHANGED (Module 2)
-- `backend/cleaning/__init__.py` (new)
-- `backend/cleaning/cleaner.py` (new — core cleaning engine)
-- `tests/test_cleaning.py` (new — 25 unit tests)
-- `notebooks/02_cleaning_analysis.py` (new — pre-cleaning analysis)
-- `docs/modules/module-02-data-cleaning.md` (new)
+## FILES CHANGED (Module 3)
+- `backend/features/__init__.py` (new)
+- `backend/features/builder.py` (new — core feature engine)
+- `tests/test_features.py` (new — 27 unit tests)
+- `docs/modules/module-03-feature-engineering.md` (new)
 - `docs/project-state/MODULE_STATUS.md` (updated)
 - `docs/project-state/MASTER_STATE.md` (updated)
 - `docs/project-state/CURRENT_SESSION.md` (updated)
-- `docs/project-state/DECISIONS.md` (updated)
 - `docs/project-state/TEST_RESULTS.md` (updated)
 - `docs/project-state/CHANGELOG.md` (updated)
-- `.gitignore` (updated)
 
 ## IMPORTANT CODE LOCATIONS
 - Data loader: `backend/ingestion/loader.py`
 - Data validator: `backend/ingestion/validator.py`
-- Data cleaner: `backend/cleaning/cleaner.py` (`clean_all()`)
+- Data cleaner: `backend/cleaning/cleaner.py`
+- Feature builder: `backend/features/builder.py` (`build_all_features()`, `build_mp_features()`, `build_work_features()`, `build_vendor_features()`)
 - Ingestion tests: `tests/test_ingestion.py`
 - Cleaning tests: `tests/test_cleaning.py`
+- Feature tests: `tests/test_features.py`
 - Dataset CSVs: `D:\sih 2026\mplads dataset\`
 
-## DATASET STATE (CLEANED)
-| Dataset | Rows Raw | Rows Cleaned | Null Handling |
-|---|---|---|---|
-| mp_summary | 774 | 774 | Clean, 1 zero-allocation MP preserved |
-| expenditures | 108,695 | 76,313 | 32,382 duplicate rows removed |
-| completed_works | 44,028 | 44,028 | 85 null descriptions imputed, 5 null cats -> Uncategorized |
-| recommended_works | 87,272 | 87,272 | 52 null descriptions imputed, 5 null cats -> Uncategorized |
+## DATASET & FEATURE STATE
+| Feature Matrix | Entity Grain | Row Count | Column Count | Primary Downstream Consumers |
+|---|---|---|---|---|
+| `mp_features` | MP / Representative | 774 | 33 | Module 4A (Isolation Forest), Module 4B (Autoencoder) |
+| `work_features` | Completed Works | 44,028 | 19 | Module 13 ("Why Flagged?" Engine) |
+| `vendor_features` | Contractors / Vendors | 28,206 | 13 | Module 7 & 8 (NetworkX Graph Engine) |
 
 ## MODEL STATE
-All NOT STARTED. See MODEL_STATE.md. Next is Feature Engineering (Module 3).
+- Module 4A (Isolation Forest): NOT STARTED -> Active next
+- Module 4B (Autoencoder): NOT STARTED -> Following 4A
+- Module 5 (Ensemble): NOT STARTED -> Combining 4A + 4B
 
 ## KNOWN BUGS
 None.
 
 ## IMPORTANT DECISIONS
-- DECISION-001: SQLite for MVP
-- DECISION-002: Unsupervised ML first
-- DECISION-003: GNN deferred
-- DECISION-004: Airflow/Redis removed
-- DECISION-005: Dropped average_rating column (>99% null)
-- DECISION-006: Duplicate threshold = WARNING at 29.8% in raw ingestion
-- DECISION-007: Preserve zero-allocation MPs with audit warning
-- DECISION-008: Impute missing descriptions with `"[No description]"`
-- DECISION-009: Standardize missing categories to `"Uncategorized"`
+- DECISION-001 through DECISION-009 documented in `docs/project-state/DECISIONS.md`
 
 ## LAST STABLE CHECKPOINT
-**v0.2-data-cleaning** (2026-09-10)
+**v0.3-feature-engineering** (2026-09-10)
 
 ## WHAT MUST NOT BE CHANGED
-- `backend/ingestion/loader.py` output format and snake_case schema
-- `backend/cleaning/cleaner.py` deduplication logic and input/output contracts
+- `backend/features/builder.py` column outputs and mathematical definitions
+- Upstream ingestion and cleaning contracts
 
 ## WHAT IS SAFE TO CHANGE
-- Feature engineering parameters and formula definitions in Module 3
+- Isolation Forest hyperparameters (contamination, n_estimators, max_samples) in Module 4A
 
 ## EXACT NEXT STEP
-1. Implement `backend/features/builder.py` for Module 3
-2. Build unit tests in `tests/test_features.py`
-3. Verify feature distributions and ensure no NaN/Inf values
-4. Document in `docs/modules/module-03-feature-engineering.md`
-5. Tag `v0.3-feature-engineering`
+1. Implement `backend/engine/isolation_forest.py`
+2. Create unit tests in `tests/test_isolation_forest.py`
+3. Train Isolation Forest on normalized numerical features of `mp_features`
+4. Verify anomaly scoring distribution and calibrate contamination parameter
+5. Document in `docs/modules/module-04a-isolation-forest.md`
+6. Tag `v0.4-isolation-forest`
 
 ## COMMAND TO VERIFY CURRENT STATE
 ```bash
-python "D:\sih 2026\sample mvp\NEXORAS-sample-mvp\tests\test_cleaning.py"
+python "D:\sih 2026\sample mvp\NEXORAS-sample-mvp\tests\test_features.py"
 ```
 
 ## HOW TO CONTINUE
 1. Read docs/project-state/MASTER_STATE.md
 2. Read docs/project-state/MODULE_STATUS.md
 3. Read this HANDOFF.md
-4. Read docs/modules/module-02-data-cleaning.md
-5. Run tests/test_cleaning.py
-6. Proceed to implement Module 3 feature engineering
+4. Read docs/modules/module-03-feature-engineering.md
+5. Run tests/test_features.py
+6. Proceed to implement Module 4A Isolation Forest
+
 

@@ -5,7 +5,7 @@
 | Module 0 — System Understanding | COMPLETE | — | v0.0-workspace-init | — |
 | Module 1 — Data Ingestion | COMPLETE | 21/21 PASS | v0.1-data-ingestion | — |
 | Module 2 — Data Cleaning & Validation | COMPLETE | 25/25 PASS | v0.2-data-cleaning | — |
-| Module 3 — Feature Engineering | NOT STARTED | — | — | After Module 2 |
+| Module 3 — Feature Engineering | COMPLETE | 27/27 PASS | v0.3-feature-engineering | — |
 | Module 4A — Isolation Forest | NOT STARTED | — | — | After Module 3 |
 | Module 4B — Autoencoder | NOT STARTED | — | — | After Module 3 |
 | Module 5 — Anomaly Ensemble | NOT STARTED | — | — | After 4A + 4B |

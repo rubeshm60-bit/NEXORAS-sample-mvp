@@ -79,3 +79,25 @@ v0.1-data-ingestion
 
 ### Checkpoint
 v0.2-data-cleaning
+
+---
+
+## 2026-09-10 (Module 3)
+
+### Added
+- `backend/features/__init__.py`: Features package initializer
+- `backend/features/builder.py`: Multi-grain feature extraction engine:
+  - `build_mp_features()`: 774 rows × 33 cols (financial ratios, vendor HHI, top vendor share, execution compliance)
+  - `build_work_features()`: 44,028 rows × 19 cols (cost deviation Z-score, category median ratio, extreme cost outlier flag, missing image indicator)
+  - `build_vendor_features()`: 28,206 rows × 13 cols (total payout, transaction volume, multi-MP presence, in-progress payment ratio)
+  - `build_all_features()`: Unified feature extraction pipeline
+- `tests/test_features.py`: 27-test feature engineering validation suite (27/27 PASS)
+- `docs/modules/module-03-feature-engineering.md`: Full documentation of Module 3
+
+### Verified
+- Zero NaNs or Infinite values across all engineered feature series
+- Complete mathematical boundary compliance for ratios, HHI, and compliance percentages
+
+### Checkpoint
+v0.3-feature-engineering
+

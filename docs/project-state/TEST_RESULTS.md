@@ -95,3 +95,54 @@ PASS
 ## Commit / Checkpoint
 v0.2-data-cleaning
 
+---
+# TEST SESSION — 2026-09-10 (Module 3: Feature Engineering)
+
+## Module
+Module 3 — Feature Engineering
+
+## Command
+```bash
+python tests/test_features.py
+```
+
+## Tests Run
+27
+
+## Passed
+27
+
+## Failed
+0
+
+## Edge Cases Tested
+- Multi-dataset aggregation with safe division guarding against zero denominators (e.g. zero-allocation MP)
+- Missing expenditure or completed works records imputed cleanly without generating NaNs or Infs
+- Bounded index mathematical validation: `vendor_hhi` strictly within [0.0, 1.0]
+- Top contractor fund concentration: `top_vendor_share` strictly within [0.0, 1.0]
+- Image compliance rate strictly within [0.0, 1.0]
+- Cost deviation Z-score and ratio to category median calculation
+- Identification of multi-constituency contractors (serving >= 3 MPs)
+- Identification of high-value contractors (>= 95th percentile payout)
+
+## Output
+```
+FEATURE ENGINEERING SUMMARY:
+  mp_features: 774 rows, 33 columns (0 NaNs in features)
+  work_features: 44028 rows, 19 columns (0 NaNs in features)
+  vendor_features: 28206 rows, 13 columns (0 NaNs in features)
+
+RESULTS: 27/27 tests passed, 0 failed
+ALL TESTS PASSED
+```
+
+## Bugs Found
+- None. All 27 checks passed on initial run.
+
+## Final Status
+PASS
+
+## Commit / Checkpoint
+v0.3-feature-engineering
+
+
