@@ -2,6 +2,14 @@
 
 ## 2026-09-10
 
+### v1.4-integration (2026-09-10)
+- Implemented Module 17 (Integration).
+- Created \un_pipeline.py\ to execute E2E data ingestion, ML scoring, explanation generation, and database seeding.
+- Resolved ID collision issues using MD5 hashing for stable MP and Vendor IDs.
+- Fully populated \
+exoras_mvp.db\ with ML-scored sample data.
+
+
 ### v1.3-frontend (2026-09-10)
 - Implemented Module 16 (React Frontend).
 - Initialized Vite + React.
@@ -256,6 +264,7 @@ v0.7-vendor-intelligence
 
 ### Checkpoint
 v0.8-network-graph
+
 
 
 

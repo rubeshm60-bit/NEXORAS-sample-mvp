@@ -20,7 +20,7 @@
 | Module 14 — Database | COMPLETE | 3/3 PASS | v1.1-database | — |
 | Module 15 — FastAPI Backend | COMPLETE | 6/6 PASS | v1.2-fastapi | — |
 | Module 16 — React Frontend | COMPLETE | MANUAL PASS | v1.3-frontend | — |
-| Module 17 — Integration | NOT STARTED | — | — | After Module 16 |
+| Module 17 — Integration | COMPLETE | E2E SCRIPT PASS | v1.4-integration | — |
 
 ## Allowed Statuses
 `NOT STARTED` | `IN PROGRESS` | `TESTING` | `BLOCKED` | `COMPLETE` | `DEFERRED`
