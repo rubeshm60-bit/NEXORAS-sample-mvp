@@ -11,9 +11,9 @@
 | Module 5 — Anomaly Ensemble | COMPLETE | 29/29 PASS | v0.6-anomaly-ensemble | — |
 | Module 6 — XGBoost (Supervised) | NOT STARTED | — | — | Feasibility TBD |
 | Module 7 — Vendor Network Intelligence | COMPLETE | 14/14 PASS | v0.7-vendor-intelligence | — |
-| Module 8 — NetworkX Graph Engine | NOT STARTED | — | — | After Module 7 |
-| Module 9 — GNN | DEFERRED | — | — | After NetworkX proves sufficient |
-| Module 10 — NLP / spaCy | NOT STARTED | — | — | After dataset text inspection |
+| Module 8 — NetworkX Graph Engine | COMPLETE | 12/12 PASS | v0.8-network-graph | — |
+| Module 9 — GNN | DEFERRED | — | — | Sufficient graph intelligence delivered via NetworkX |
+| Module 10 — NLP / spaCy | NOT STARTED | — | — | Next action: project description duplicate text detection |
 | Module 11 — Risk Scoring Engine | NOT STARTED | — | — | After Modules 4+8 |
 | Module 12 — Explainability / SHAP | NOT STARTED | — | — | After Module 11 |
 | Module 13 — "Why Flagged?" Engine | NOT STARTED | — | — | After Module 12 |

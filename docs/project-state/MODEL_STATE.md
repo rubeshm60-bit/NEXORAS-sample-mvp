@@ -153,13 +153,26 @@ Module 8 — NetworkX Graph Engine
 ## Model 5 — NetworkX Graph Engine
 
 ### Status
-IN PROGRESS
+COMPLETE (Module 8, Checkpoint: v0.8-network-graph)
 
 ### Purpose
-Build bipartite/tripartite NetworkX graph (MP ↔ Vendor ↔ IDA), compute centrality, PageRank, and detect collusion communities.
+Heterogeneous tripartite (MP ↔ Vendor ↔ IDA) and bipartite (MP ↔ Vendor) topological network modeling. Computes PageRank, betweenness centrality, Louvain modularity communities, and bipartite cartel cliques.
+
+### Network Topology & Scale
+- Nodes: 29,745 (774 MPs, 28,206 Vendors, 765 IDAs)
+- Edges: 64,375 (31,585 direct MP-Vendor disbursements)
+- Giant Connected Component: 29,103 nodes (97.8% of entire network)
+- Modular Communities: 310 Louvain communities
+
+### Key Algorithms & Metrics
+1. `PageRank`: Weighted stationary transition probability distribution ($\sum PR = 1.0$)
+2. `Betweenness Centrality`: Core subgraph bridge detection
+3. `Louvain Community Detection`: Modularity-optimized clustering
+4. `Bipartite Cartel Mining`: Co-vendor partnership rings
+5. `Ego Subgraph API`: Cytoscape / UI-ready graph data
 
 ### Next Action
-Construct graph and compute node/edge risk metrics (Module 8)
+Module 10 — NLP / Text Matching & Module 11 — Unified Risk Engine
 
 ---
 

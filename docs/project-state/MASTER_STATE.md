@@ -13,16 +13,16 @@ IN PROGRESS
 Phase 3 — Network Intelligence & Risk Scoring
 
 ## Current Module
-Module 8 — NetworkX Graph Engine
+Module 10 — NLP / Text Matching & Module 11 — Risk Scoring Engine
 
 ## Current Task
-Construct bipartite/tripartite NetworkX graph (MP ↔ Vendor ↔ IDA), compute centrality/PageRank, and detect collusion communities
+Implement project description text duplicate matching (Module 10) and synthesize all tabular, neural, and graph anomaly signals into Unified Risk Scoring Engine (Module 11)
 
 ## Last Completed Module
-Module 7 — Vendor Network Intelligence
+Module 8 — NetworkX Graph Engine
 
 ## Last Stable Checkpoint
-v0.7-vendor-intelligence (2026-09-10)
+v0.8-network-graph (2026-09-10)
 
 ## Repository Structure
 ```
@@ -66,7 +66,7 @@ CSV Dataset → Ingestion → Cleaning → Feature Engineering
 - Model 2 (Autoencoder): COMPLETE (MPAutoencoder in PyTorch, 26/26 PASS)
 - Model 3 (Anomaly Ensemble): COMPLETE (AnomalyEnsemble, 29/29 PASS)
 - Model 4 (Vendor Network Intelligence): COMPLETE (VendorNetworkIntelligence, 14/14 PASS)
-- Model 5 (NetworkX Graph Engine): IN PROGRESS next
+- Model 5 (NetworkX Graph Engine): COMPLETE (MPLADSNetworkGraph, 12/12 PASS)
 
 ## Backend
 - `backend/ingestion/loader.py`: Raw CSV loading, snake_case normalization, date parsing
@@ -77,6 +77,7 @@ CSV Dataset → Ingestion → Cleaning → Feature Engineering
 - `backend/engine/autoencoder.py`: Deep neural reconstruction Autoencoder in PyTorch
 - `backend/engine/ensemble.py`: AnomalyEnsemble dual-signal consensus engine
 - `backend/engine/vendor_intelligence.py`: VendorNetworkIntelligence entity modeling & cartel detection
+- `backend/engine/network_graph.py`: MPLADSNetworkGraph heterogeneous & bipartite topological engine
 
 ## Frontend
 Not started
@@ -93,16 +94,18 @@ Not decided — SQLite for MVP, PostgreSQL for production
 - Module 4B: Autoencoder (26/26 PASS, checkpoint: v0.5-autoencoder)
 - Module 5: Anomaly Ensemble (29/29 PASS, checkpoint: v0.6-anomaly-ensemble)
 - Module 7: Vendor Network Intelligence (14/14 PASS, checkpoint: v0.7-vendor-intelligence)
+- Module 8: NetworkX Graph Engine (12/12 PASS, checkpoint: v0.8-network-graph)
 
 ## Modules In Progress
-- Module 8: NetworkX Graph Engine
+- Module 10: NLP / Text Matching
+- Module 11: Risk Scoring Engine
 
 ## Blocked Modules
 None
 
 ## Deferred Modules
 - Module 6 (XGBoost): Supervised fraud labels do not exist in open portal data
-- Module 9 (GNN): Feasibility evaluated following NetworkX graph analysis
+- Module 9 (GNN): NetworkX provides complete macro-scale graph intelligence without needing synthetic link-prediction training
 - Airflow: Scheduled DAGs not required for hackathon MVP
 - Redis: Memory caching deferred for hackathon MVP
 
@@ -110,7 +113,7 @@ None
 None
 
 ## Known Limitations
-- No labeled fraud data — unsupervised ensemble is the primary anomaly engine
+- No labeled fraud data — unsupervised ensemble + network topological signals form the authoritative risk foundation
 
 ## Important Decisions
 - DECISION-001 through DECISION-009 documented in `docs/project-state/DECISIONS.md`
@@ -123,14 +126,15 @@ None
 - Module 4B test suite (`tests/test_autoencoder.py`): 26/26 PASS
 - Module 5 test suite (`tests/test_ensemble.py`): 29/29 PASS
 - Module 7 test suite (`tests/test_vendor_intelligence.py`): 14/14 PASS
+- Module 8 test suite (`tests/test_network_graph.py`): 12/12 PASS
 
 ## Next 3 Actions
-1. Implement Module 8 (`backend/engine/network_graph.py`): NetworkX bipartite and multi-partite graph construction (MP-Vendor-Project), centrality, PageRank, and community detection
-2. Create unit tests for Module 8 (`tests/test_network_graph.py`) and document in `docs/modules/`
-3. Advance to NLP / Project Description matching (Module 10) & Unified Risk Scoring Engine (Module 11)
+1. Implement Module 10 (`backend/engine/nlp_matcher.py`): TF-IDF / fuzzy duplicate work description matching within constituencies
+2. Implement Module 11 (`backend/scoring/risk_engine.py`): Composite Risk Scoring Engine (0-100) synthesizing Tabular ML, Graph, and Text signals
+3. Implement Module 12 & 13: Explainability and "Why Flagged?" narrative generation
 
 ## EXACT NEXT TASK
-Implement Module 8: NetworkX Graph Engine.
+Implement Module 10 & 11: NLP Duplicate Detection & Unified Risk Scoring Engine.
 
 ## Last Updated
-2026-09-10T20:45 IST
+2026-09-10T21:00 IST

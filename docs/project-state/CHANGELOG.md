@@ -197,6 +197,33 @@ v0.6-anomaly-ensemble
 ### Checkpoint
 v0.7-vendor-intelligence
 
+---
+
+## 2026-09-10 (Module 8)
+
+### Added
+- `backend/engine/network_graph.py`: NetworkX Graph Engine:
+  - Heterogeneous tripartite graph (MP ↔ Vendor ↔ IDA) with 29,745 nodes and 64,375 edges
+  - Bipartite MP-Vendor projection with 31,585 disbursement edges
+  - Weighted PageRank centrality calculation ($\alpha = 0.85$, exact conservation to $1.0$)
+  - Core betweenness centrality identifying structural bottlenecks
+  - Connected component partitioning (89 components, giant component contains 97.8% of nodes)
+  - Louvain modularity community detection discovering 310 community clusters
+  - Bipartite clique mining identifying 50 regional contractor consortiums
+  - Ego-subgraph extraction API formatting Cytoscape/UI JSON structures for frontend rendering
+  - Pipeline runner `run_network_graph_pipeline()`
+- `tests/test_network_graph.py`: 12-test comprehensive validation suite (12/12 PASS)
+- `docs/modules/module-08-networkx-graph.md`: Full documentation of Module 8
+
+### Verified
+- Bipartite structure strictly preserved between MP and Vendor partitions
+- Zero non-finite values in PageRank and Betweenness metrics
+- Full ego-graph schema compliance for UI integration
+
+### Checkpoint
+v0.8-network-graph
+
+
 
 
 
