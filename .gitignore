@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+
+# Test artifacts (keep test scripts, exclude output logs)
+tests/test_output*.txt
+tests/dup_analysis.txt
+notebooks/inspect_output.txt
+
+# ML model artifacts
+*.pkl
+*.pt
+*.h5
+*.joblib
+
+# Data (do NOT commit large CSV files)
+data/
+*.csv

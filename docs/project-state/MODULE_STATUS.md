@@ -2,8 +2,8 @@
 
 | Module | Status | Tests | Last Checkpoint | Next Action |
 |---|---|---|---|---|
-| Module 0 — System Understanding | IN PROGRESS | — | v0.0-workspace-init | Inspect datasets |
-| Module 1 — Data Ingestion | NOT STARTED | — | — | After dataset inspection |
+| Module 0 — System Understanding | COMPLETE | — | v0.0-workspace-init | — |
+| Module 1 — Data Ingestion | TESTING | 21/21 PASS | — | Commit + checkpoint |
 | Module 2 — Data Cleaning & Validation | NOT STARTED | — | — | After Module 1 |
 | Module 3 — Feature Engineering | NOT STARTED | — | — | After Module 2 |
 | Module 4A — Isolation Forest | NOT STARTED | — | — | After Module 3 |
