@@ -2,6 +2,13 @@
 
 ## 2026-09-10
 
+### v0.9-risk-scoring (2026-09-10)
+- Implemented Module 10 (NLP Project Intelligence Engine).
+- Implemented Module 11 (Unified Risk Scoring Engine).
+- Added tests for modules 10 & 11 (100% pass).
+- Updated all project state files.
+
+
 ### Added
 - Repository created and cloned to `D:\sih 2026\sample mvp\NEXORAS-sample-mvp\`
 - AGENTS.md — project context and agent rules
@@ -222,6 +229,7 @@ v0.7-vendor-intelligence
 
 ### Checkpoint
 v0.8-network-graph
+
 
 
 

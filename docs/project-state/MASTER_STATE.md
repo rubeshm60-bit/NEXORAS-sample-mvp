@@ -13,16 +13,16 @@ IN PROGRESS
 Phase 3 — Network Intelligence & Risk Scoring
 
 ## Current Module
-Module 10 — NLP / Text Matching & Module 11 — Risk Scoring Engine
+Module 12 — Explainability / SHAP
 
 ## Current Task
-Implement project description text duplicate matching (Module 10) and synthesize all tabular, neural, and graph anomaly signals into Unified Risk Scoring Engine (Module 11)
+Implement SHAP for model explainability and "Why Flagged" validation.
 
 ## Last Completed Module
-Module 8 — NetworkX Graph Engine
+Module 11 — Risk Scoring Engine
 
 ## Last Stable Checkpoint
-v0.8-network-graph (2026-09-10)
+v0.9-risk-scoring (2026-09-10)
 
 ## Repository Structure
 ```

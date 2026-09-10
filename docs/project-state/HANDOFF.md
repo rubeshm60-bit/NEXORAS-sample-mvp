@@ -12,17 +12,19 @@ NEXORAS
 SIH26102 — AI-powered anomaly, fraud and inefficiency detection in MPLAD Scheme
 
 ## CURRENT STATUS
-**Module 8 — NetworkX Graph Engine: COMPLETE** (12/12 tests pass)
-Ready to begin Module 10 (NLP / Text Matching) and Module 11 (Unified Risk Scoring Engine).
+**Module 11 — Risk Scoring Engine: COMPLETE** (5/5 tests pass)
+Ready to begin Module 12 (Explainability / SHAP).
 
 ## CURRENT MODULE
-Module 8 (COMPLETE) → Starting Module 10 (NLP) & Module 11 (Risk Scoring Engine)
+Module 11 (COMPLETE) -> Starting Module 12 (SHAP)
 
 ## CURRENT TASK
-Implement project description text duplicate matching (Module 10) and synthesize all tabular, neural, and graph anomaly signals into Unified Risk Scoring Engine (Module 11).
+Implement SHAP for model explainability and "Why Flagged" validation.
 
 ## WHAT WAS JUST COMPLETED
-- Module 8 — NetworkX Graph Engine
+- Module 10 — NLP Project Intelligence Engine
+- Module 11 — Unified Risk Scoring Engine
+- Module 11 - Unified Risk Scoring Engine
 - Built `backend/engine/network_graph.py`:
   - `MPLADSNetworkGraph`: Large-scale heterogeneous tripartite graph (MP ↔ Vendor ↔ IDA) with 29,745 nodes and 64,375 edges
   - Bipartite MP-Vendor projection with 31,585 disbursement edges
@@ -102,6 +104,9 @@ python "D:\sih 2026\sample mvp\NEXORAS-sample-mvp\tests\test_network_graph.py"
 4. Read docs/modules/module-08-networkx-graph.md
 5. Run tests/test_network_graph.py
 6. Proceed to implement Module 10 (NLP) & Module 11 (Unified Risk Engine)
+
+
+
 
 
 

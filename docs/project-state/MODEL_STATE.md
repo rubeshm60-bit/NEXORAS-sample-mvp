@@ -1,7 +1,7 @@
 # NEXORAS MODEL STATE
 
 ## Overview
-No models implemented yet. All statuses are NOT STARTED.
+All models up to Module 11 implemented.
 
 ---
 
@@ -189,20 +189,35 @@ If NetworkX shows clear cartel/collusion patterns that tabular ML misses, implem
 
 ---
 
-## Model 6 — NLP / spaCy
+## Model 6 � NLP Project Intelligence Engine
 
 ### Status
-NOT STARTED
+COMPLETE (Module 10, Checkpoint: v0.9-risk-scoring)
 
-### Feasibility
-UNKNOWN — depends on whether text fields exist in the dataset (project descriptions, work descriptions).
+### Purpose
+Detects duplicate/split projects and vague descriptions using TF-IDF and NLP.
 
-### Next Action
-Inspect dataset columns during Module 1
+### Implementation
+1. TF-IDF vectorization with cosine similarity > 0.85.
+2. Exact match finding.
+3. Vague word counting.
 
 ---
 
-## Model 7 — SHAP
+## Model 7 � Unified Risk Scoring Engine
+
+### Status
+COMPLETE (Module 11, Checkpoint: v0.9-risk-scoring)
+
+### Purpose
+Synthesizes 5 pillars into a 0-100 score.
+
+### Implementation
+Weights: Tabular Anomaly Ensemble (25%), Vendor Network Risk (25%), NetworkX Graph Centrality (20%), Financial/Compliance (15%), NLP Contract Splitting (15%). Assigns tiers and Why Flagged reasons.
+
+---
+
+## Model 8 — SHAP
 
 ### Status
 NOT STARTED
@@ -212,3 +227,4 @@ Explain WHY a project was flagged — which features contributed most to the ris
 
 ### Next Action
 Implement after ML models are working (Module 12)
+

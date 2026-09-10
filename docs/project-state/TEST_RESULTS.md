@@ -419,3 +419,12 @@ v0.8-network-graph
 
 
 
+
+## Module 10 - NLP Project Intelligence Engine
+- **File**: 	ests/test_nlp_matcher.py`n- **Result**: 9/9 PASS
+- **Coverage**: Text normalization, Duplicate detection, Vague words.
+
+## Module 11 - Unified Risk Scoring Engine
+- **File**: 	ests/test_risk_engine.py`n- **Result**: 5/5 PASS
+- **Coverage**: Normalization, Weights, Missing Signals, Tiers, Why Flagged.
+

@@ -13,8 +13,8 @@
 | Module 7 — Vendor Network Intelligence | COMPLETE | 14/14 PASS | v0.7-vendor-intelligence | — |
 | Module 8 — NetworkX Graph Engine | COMPLETE | 12/12 PASS | v0.8-network-graph | — |
 | Module 9 — GNN | DEFERRED | — | — | Sufficient graph intelligence delivered via NetworkX |
-| Module 10 — NLP / spaCy | NOT STARTED | — | — | Next action: project description duplicate text detection |
-| Module 11 — Risk Scoring Engine | NOT STARTED | — | — | After Modules 4+8 |
+| Module 10 — NLP / spaCy | COMPLETE | 9/9 PASS | v0.9-risk-scoring | — |
+| Module 11 — Risk Scoring Engine | COMPLETE | 5/5 PASS | v0.9-risk-scoring | — |
 | Module 12 — Explainability / SHAP | NOT STARTED | — | — | After Module 11 |
 | Module 13 — "Why Flagged?" Engine | NOT STARTED | — | — | After Module 12 |
 | Module 14 — Database | NOT STARTED | — | — | After AI core works |
