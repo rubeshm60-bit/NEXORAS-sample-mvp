@@ -30,6 +30,7 @@ Thumbs.db
 tests/test_output*.txt
 tests/test_cleaning_output.txt
 tests/test_features_output.txt
+tests/test_isolation_forest_output.txt
 tests/dup_analysis.txt
 tests/cleaning_analysis.txt
 notebooks/inspect_output.txt

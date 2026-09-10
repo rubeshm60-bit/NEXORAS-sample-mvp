@@ -13,16 +13,16 @@ IN PROGRESS
 Phase 2 — AI / ML Anomaly Engines
 
 ## Current Module
-Module 4A — Isolation Forest
+Module 4B — Autoencoder
 
 ## Current Task
-Implement unsupervised Isolation Forest anomaly detection engine on MP-level and Work-level features
+Implement deep neural reconstruction error Autoencoder in PyTorch for non-linear anomaly detection on MP feature vectors
 
 ## Last Completed Module
-Module 3 — Feature Engineering
+Module 4A — Isolation Forest
 
 ## Last Stable Checkpoint
-v0.3-feature-engineering (2026-09-10)
+v0.4-isolation-forest (2026-09-10)
 
 ## Repository Structure
 ```
@@ -62,13 +62,15 @@ CSV Dataset → Ingestion → Cleaning → Feature Engineering
 - Status: RAW — not yet loaded or cleaned
 
 ## Implemented Models
-- Module 4A (Isolation Forest) next
+- Model 1 (Isolation Forest): COMPLETE (MPIsolationForest + WorkIsolationForest, 25/25 PASS)
+- Model 2 (Autoencoder): IN PROGRESS next
 
 ## Backend
 - `backend/ingestion/loader.py`: Raw CSV loading, snake_case normalization, date parsing
 - `backend/ingestion/validator.py`: Integrity validation
 - `backend/cleaning/cleaner.py`: Deduplication, missing value imputation, string stripping
 - `backend/features/builder.py`: Multi-grain feature engineering (MP, work, vendor)
+- `backend/engine/isolation_forest.py`: MPIsolationForest & WorkIsolationForest anomaly models
 
 ## Frontend
 Not started
@@ -81,9 +83,10 @@ Not decided — SQLite for MVP, PostgreSQL for production
 - Module 1: Data Ingestion (21/21 PASS, checkpoint: v0.1-data-ingestion)
 - Module 2: Data Cleaning & Validation (25/25 PASS, checkpoint: v0.2-data-cleaning)
 - Module 3: Feature Engineering (27/27 PASS, checkpoint: v0.3-feature-engineering)
+- Module 4A: Isolation Forest (25/25 PASS, checkpoint: v0.4-isolation-forest)
 
 ## Modules In Progress
-- Module 4A: Isolation Forest
+- Module 4B: Autoencoder
 
 ## Blocked Modules
 None
@@ -100,28 +103,21 @@ None
 - No labeled fraud data — unsupervised models only for now
 
 ## Important Decisions
-- DECISION-001: Use SQLite for MVP, not PostgreSQL (avoid infra overhead)
-- DECISION-002: Start with Isolation Forest + Autoencoder before GNN
-- DECISION-003: GNN deferred until NetworkX proves graph data is sufficient
-- DECISION-004: Remove Airflow and Redis from MVP scope
-- DECISION-005: Drop `average_rating` column (>99% null)
-- DECISION-006: Treat duplicate records in raw expenditures as WARNING for cleaning
-- DECISION-007: Preserve zero-allocation MPs with audit warning
-- DECISION-008: Impute missing descriptions rather than dropping rows
-- DECISION-009: Standardize missing categories to `"Uncategorized"`
+- DECISION-001 through DECISION-009 documented in `docs/project-state/DECISIONS.md`
 
 ## Latest Test Status
 - Module 1 test suite (`tests/test_ingestion.py`): 21/21 PASS
 - Module 2 test suite (`tests/test_cleaning.py`): 25/25 PASS
 - Module 3 test suite (`tests/test_features.py`): 27/27 PASS
+- Module 4A test suite (`tests/test_isolation_forest.py`): 25/25 PASS
 
 ## Next 3 Actions
-1. Implement Module 4A (`backend/engine/isolation_forest.py`): train unsupervised Isolation Forest models on MP features and work features
-2. Create unit tests (`tests/test_isolation_forest.py`) verifying scoring, contamination thresholds, and reproducibility
-3. Document in `docs/modules/module-04a-isolation-forest.md`
+1. Implement Module 4B (`backend/engine/autoencoder.py`): build PyTorch/scikit-learn deep reconstruction Autoencoder
+2. Create unit tests (`tests/test_autoencoder.py`) verifying loss reduction, reconstruction MSE calculation, and thresholding
+3. Document in `docs/modules/module-04b-autoencoder.md`
 
 ## EXACT NEXT TASK
-Implement Module 4A — Isolation Forest: build unsupervised outlier isolation model and test anomaly scoring pipeline.
+Implement Module 4B — Autoencoder: build neural compression-reconstruction architecture, verify MSE loss minimization on normal data, and test thresholded anomaly detection.
 
 ## Last Updated
-2026-09-10T19:46 IST
+2026-09-10T19:56 IST

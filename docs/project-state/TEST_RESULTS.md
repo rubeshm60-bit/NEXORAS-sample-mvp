@@ -145,4 +145,56 @@ PASS
 ## Commit / Checkpoint
 v0.3-feature-engineering
 
+---
+# TEST SESSION — 2026-09-10 (Module 4A: Isolation Forest Engine)
+
+## Module
+Module 4A — Isolation Forest
+
+## Command
+```bash
+python tests/test_isolation_forest.py
+```
+
+## Tests Run
+25
+
+## Passed
+25
+
+## Failed
+0
+
+## Edge Cases Tested
+- Full model fitting on 774 MP vectors and 44,028 completed works
+- Mathematical score normalization into strictly $[0.0, 1.0]$ interval (verified no negative scores, no scores > 1.0)
+- Verified 0 NaNs and 0 Infs in all generated continuous anomaly scores
+- Contamination threshold validation (exactly 62 MPs / 8.0% flagged as anomalous)
+- Anomaly ranking sensitivity: MPs with monopoly contractors ($HHI \approx 1.0$) scored higher than population mean
+- Explainability feature attribution: `explain_mp` returns non-empty structured list of percentage deviations relative to inlier medians
+- Model serialization & deserialization with `joblib`: reloaded model produces identical scores ($\Delta < 10^{-6}$)
+- Work-level model identifies extreme cost outliers (1,310 works / 3.0% flagged for field verification)
+
+## Output
+```
+NEXORAS — Module 4A: Running Isolation Forest Pipeline
+  Fitting MPIsolationForest on 774 MPs with 9 features...
+  MP Model complete: 62 / 774 MPs flagged anomalous (8.0%)
+  Fitting WorkIsolationForest on 44028 works with 3 features...
+  Work Model complete: 1310 / 44028 works flagged anomalous (3.0%)
+
+RESULTS: 25/25 tests passed, 0 failed
+ALL TESTS PASSED
+```
+
+## Bugs Found
+- None. All 25 checks passed on initial run.
+
+## Final Status
+PASS
+
+## Commit / Checkpoint
+v0.4-isolation-forest
+
+
 

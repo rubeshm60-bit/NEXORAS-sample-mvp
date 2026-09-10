@@ -8,41 +8,38 @@ No models implemented yet. All statuses are NOT STARTED.
 ## Model 1 — Isolation Forest
 
 ### Status
-NOT STARTED
+COMPLETE (Module 4A, Checkpoint: v0.4-isolation-forest)
 
 ### Purpose
-Unsupervised anomaly detection on financial/expenditure features. Isolates outliers by random partitioning — anomalies need fewer splits.
+Unsupervised multi-tree recursive partitioning to isolate multi-dimensional statistical outliers across parliamentarians (MP level) and individual works.
 
-### Input Features (Planned)
-- expenditure_ratio, cost_deviation, unspent_ratio, admin_ratio, vendor_concentration
+### Models Implemented
+1. `MPIsolationForest`:
+   - Input Features (9): `utilization_rate`, `unspent_ratio`, `completion_rate`, `vendor_hhi`, `top_vendor_share`, `pending_payment_ratio`, `avg_transaction_size`, `image_compliance_rate`, `avg_spend_per_vendor`
+   - Preprocessing: `StandardScaler`
+   - Training Data: 774 MP feature vectors
+   - Parameters: `n_estimators=200`, `contamination=0.08`, `random_state=42`
+   - Output: `if_anomaly_score` [0.0, 1.0], `if_is_anomaly` (bool, 62 MPs flagged, 8.0%)
+   - Serialization: `joblib` compatible
 
-### Preprocessing
-StandardScaler normalization (planned)
+2. `WorkIsolationForest`:
+   - Input Features (3): `final_amount`, `cost_deviation_z`, `cost_to_median_ratio`
+   - Preprocessing: `StandardScaler`
+   - Training Data: 44,028 completed works
+   - Parameters: `n_estimators=150`, `contamination=0.03`, `random_state=42`
+   - Output: `work_if_score` [0.0, 1.0], `work_is_anomaly` (bool, 1,310 works flagged, 3.0%)
 
-### Training Data
-mplads_mp_summary + mplads_expenditures CSVs (after cleaning + feature engineering)
-
-### Parameters (TBD)
-- n_estimators, contamination, max_features
-
-### Threshold
-TBD after training
-
-### Output
-anomaly_score (float), anomaly_label (0/1)
-
-### Model File
-Not saved yet — `backend/engine/isolation_forest.pkl` (planned)
-
-### Version
-Not trained
+### Evaluation & Test Results
+- Unit tests: 25/25 PASS in `tests/test_isolation_forest.py`
+- Exact reproducibility: $\Delta < 10^{-6}$ across save/load cycles
+- Explainability: `explain_mp()` produces rank-ordered feature percentage deviations relative to inlier medians
 
 ### Known Limitations
-- No labeled data — unsupervised only
-- Sensitive to feature scaling
+- Does not model entity network topologies (addressed in Module 8 NetworkX)
+- Score represents statistical outlier status, not definitive legal guilt
 
 ### Next Action
-Build after Module 3 (Feature Engineering) is complete
+Module 4B — Autoencoder (Neural Reconstruction Error Engine)
 
 ---
 

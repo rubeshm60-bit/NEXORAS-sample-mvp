@@ -101,3 +101,26 @@ v0.2-data-cleaning
 ### Checkpoint
 v0.3-feature-engineering
 
+---
+
+## 2026-09-10 (Module 4A)
+
+### Added
+- `backend/engine/__init__.py`: Engine package initializer
+- `backend/engine/isolation_forest.py`: Unsupervised Isolation Forest anomaly detection engine:
+  - `MPIsolationForest`: 200 trees, 9 financial/contractor features, contamination=0.08 (flagged 62 anomalous MPs)
+  - `WorkIsolationForest`: 150 trees, 3 project cost features, contamination=0.03 (flagged 1,310 anomalous works)
+  - `explain_mp()`: Local feature attribution breakdown comparing observed metrics against inlier medians
+  - Serialization engine (`save`/`load`) using `joblib`
+- `tests/test_isolation_forest.py`: 25-test unit validation suite (25/25 PASS)
+- `docs/modules/module-04a-isolation-forest.md`: Full documentation of Module 4A
+
+### Verified
+- Exact score reproducibility ($\Delta < 10^{-6}$) after serialization
+- Anomaly score strictly bounded in $[0.0, 1.0]$ with 0 NaNs or Infs
+- High contractor monopoly sensitivity ($HHI \approx 1.0$ yields above-average anomaly scores)
+
+### Checkpoint
+v0.4-isolation-forest
+
+
