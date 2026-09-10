@@ -1,7 +1,7 @@
 # NEXORAS HANDOFF
 
 ## READ THIS FIRST
-This document allows a new AI session to immediately continue NEXORAS development without re-reading the entire conversation history.
+This document allows a new AI session to immediately continue NEXORAS development.
 
 ---
 
@@ -12,99 +12,90 @@ NEXORAS
 SIH26102 — AI-powered anomaly, fraud and inefficiency detection in MPLAD Scheme
 
 ## CURRENT STATUS
-Phase 0 COMPLETE — Workspace initialized, project state system created, folder scaffold built.
-Ready to begin Module 1 — Data Ingestion.
+**Module 1 — Data Ingestion: COMPLETE** (21/21 tests pass)
+Ready to begin Module 2 — Data Cleaning & Validation.
 
 ## CURRENT MODULE
-Module 0 (complete) → Starting Module 1 — Data Ingestion
+Module 1 (COMPLETE) → Starting Module 2 — Data Cleaning & Validation
 
 ## CURRENT TASK
-Inspect the 4 CSV datasets, profile their columns/types/missing values, and update DATA_STATE.md
+Deduplicate expenditures dataset (32,382 duplicate rows) and validate all data
 
 ## WHAT WAS JUST COMPLETED
-- GitHub repo cloned to `D:\sih 2026\sample mvp\NEXORAS-sample-mvp\`
-- AGENTS.md created with correct project context
-- Full docs/project-state/ system created (12 files)
-- Full folder scaffold created (backend/, frontend/, notebooks/, tests/)
-- First commit pushed to GitHub
+- Module 1 — Data Ingestion
+- 4 CSV datasets profiled and loaded successfully
+- loader.py: snake_case column normalization, date parsing, useless column dropping
+- validator.py: integrity checks (empty cols, duplicates, nulls)
+- 21/21 tests pass
+- DATA_STATE.md populated with actual column profiles
+- Tagged v0.1-data-ingestion
 
-## FILES CHANGED
-- AGENTS.md
-- docs/project-state/MASTER_STATE.md
-- docs/project-state/CURRENT_SESSION.md
-- docs/project-state/MODULE_STATUS.md
-- docs/project-state/ARCHITECTURE_STATE.md
-- docs/project-state/DATA_STATE.md
-- docs/project-state/MODEL_STATE.md
-- docs/project-state/API_STATE.md
-- docs/project-state/UI_STATE.md
-- docs/project-state/BUGS_AND_ISSUES.md
-- docs/project-state/DECISIONS.md
-- docs/project-state/TEST_RESULTS.md
-- docs/project-state/HANDOFF.md
-- docs/project-state/CHANGELOG.md
+## FILES CHANGED (Module 1)
+- backend/__init__.py (new)
+- backend/ingestion/__init__.py (new)
+- backend/ingestion/loader.py (new — core data loader)
+- backend/ingestion/validator.py (new — data integrity checks)
+- tests/test_ingestion.py (new — 21 tests)
+- notebooks/01_inspect_data.py (new — profiling script)
+- docs/modules/module-01-data-ingestion.md (new)
+- docs/project-state/DATA_STATE.md (updated with real column profiles)
+- docs/project-state/MODULE_STATUS.md (updated)
+- .gitignore (new)
 
 ## IMPORTANT CODE LOCATIONS
+- Data loader: `backend/ingestion/loader.py`
+  - `load_all()` returns dict of 4 DataFrames
+  - `load_mp_summary()`, `load_completed_works()`, `load_expenditures()`, `load_recommended_works()`
+- Data validator: `backend/ingestion/validator.py`
+- Tests: `tests/test_ingestion.py`
 - Dataset CSVs: `D:\sih 2026\mplads dataset\`
-- Repo root: `D:\sih 2026\sample mvp\NEXORAS-sample-mvp\`
-- State files: `docs/project-state/`
 
-## CURRENT ARCHITECTURE
-Nothing implemented yet. See ARCHITECTURE_STATE.md.
-
-## DATASET STATE
-- 4 CSV files available, NOT yet inspected for columns/types
-- See DATA_STATE.md for planned inspection
+## DATASET STATE (CONFIRMED)
+| Dataset | Rows | Cols | Dupes | Key Fields |
+|---|---|---|---|---|
+| mp_summary | 774 | 15 | 0 | MP-level summary stats |
+| completed_works | 44,028 | 11 | 0 | work_id, work_description, final_amount |
+| expenditures | 108,695 | 10 | 32,382 (29.8%) | vendor (!), expenditure_amount |
+| recommended_works | 87,272 | 11 | 0 | work_id, recommended_amount |
 
 ## MODEL STATE
-All models NOT STARTED. See MODEL_STATE.md.
-
-## API STATE
-Not started. See API_STATE.md.
-
-## UI STATE
-Not started. See UI_STATE.md.
-
-## TEST STATUS
-No tests run yet.
+All NOT STARTED. See MODEL_STATE.md.
 
 ## KNOWN BUGS
-None.
-
-## KNOWN LIMITATIONS
-- No labeled fraud data — unsupervised only
-- Dataset is state-level summary (work-level vendor/IA data TBD)
+- expenditures has 32,382 true duplicate rows (to be removed in Module 2)
 
 ## IMPORTANT DECISIONS
-- SQLite for MVP (DECISION-001)
-- Unsupervised models first (DECISION-002)
-- GNN deferred (DECISION-003)
-- Airflow/Redis removed from MVP (DECISION-004)
+- DECISION-001: SQLite for MVP
+- DECISION-002: Unsupervised ML first
+- DECISION-003: GNN deferred
+- DECISION-004: Airflow/Redis removed
+- DECISION-005: Dropped average_rating column (>99% null)
+- DECISION-006: Expenditure duplicate threshold = WARNING at 29.8% (not CRITICAL — true export artifacts)
 
 ## LAST STABLE CHECKPOINT
-v0.0-workspace-init (2026-09-10)
+**v0.1-data-ingestion** (2026-09-10)
 
 ## WHAT MUST NOT BE CHANGED
-- Project identity: NEXORAS, SIH26102, MPLADS fraud detection
-- Core proposed models: Isolation Forest + Autoencoder (both required)
-- HackMD document architecture reference
+- loader.py column normalization logic (downstream code depends on snake_case names)
+- Dataset file paths
 
 ## WHAT IS SAFE TO CHANGE
-- Tech stack choices (SQLite ↔ PostgreSQL, etc.)
-- Feature engineering specifics (once data is inspected)
-- Module implementation details
+- Validation thresholds in validator.py
+- Test expected row counts (data may be updated)
 
 ## EXACT NEXT STEP
-1. Run: `python notebooks/01_inspect_data.py` (create this script first)
-2. Load each CSV and print: shape, columns, dtypes, null counts, sample rows
-3. Update DATA_STATE.md with findings
-4. Determine which features are feasible for ML models
-5. Begin Module 1 — Data Ingestion implementation
+1. Create `backend/cleaning/cleaner.py`
+2. Deduplicate expenditures (drop_duplicates)
+3. Handle the 1 null work_description in recommended_works
+4. Validate cleaned data
+5. Create tests for cleaning
+6. Update state files
+7. Tag v0.2-data-cleaning
 
 ## COMMAND TO VERIFY CURRENT STATE
 ```bash
-git -C "D:\sih 2026\sample mvp\NEXORAS-sample-mvp" log --oneline
-git -C "D:\sih 2026\sample mvp\NEXORAS-sample-mvp" status
+git -C "D:\sih 2026\sample mvp\NEXORAS-sample-mvp" log --oneline -5
+python "D:\sih 2026\sample mvp\NEXORAS-sample-mvp\tests\test_ingestion.py"
 ```
 
 ## HOW TO CONTINUE
@@ -113,5 +104,5 @@ git -C "D:\sih 2026\sample mvp\NEXORAS-sample-mvp" status
 3. Read this HANDOFF.md
 4. Read docs/project-state/DATA_STATE.md
 5. Inspect Git status
-6. Create and run `notebooks/01_inspect_data.py`
+6. Run tests/test_ingestion.py to verify current state
 7. Continue from EXACT NEXT STEP above
