@@ -13,16 +13,16 @@ IN PROGRESS
 Phase 3 — Network Intelligence & Risk Scoring
 
 ## Current Module
-Module 16 — React Frontend
+Module 17 — Integration
 
 ## Current Task
-Build React dashboard, project explorer, and Cytoscape.js network visualization.
+Connect the full pipeline end-to-end: Loader -> Cleaning -> Models -> Explainer -> DB -> API -> Frontend.
 
 ## Last Completed Module
-Module 15 — FastAPI Backend
+Module 16 — React Frontend
 
 ## Last Stable Checkpoint
-v1.2-fastapi (2026-09-10)
+v1.3-frontend (2026-09-10)
 
 ## Repository Structure
 ```
