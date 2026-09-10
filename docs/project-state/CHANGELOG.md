@@ -2,6 +2,12 @@
 
 ## 2026-09-10
 
+### v1.0-explainability (2026-09-10)
+- Implemented Module 12 (Explainability / SHAP) with shap.TreeExplainer.
+- Implemented Module 13 (Why Flagged Engine) for human-readable evidence.
+- Added 100% passing tests for both.
+
+
 ### v0.9-risk-scoring (2026-09-10)
 - Implemented Module 10 (NLP Project Intelligence Engine).
 - Implemented Module 11 (Unified Risk Scoring Engine).
@@ -229,6 +235,7 @@ v0.7-vendor-intelligence
 
 ### Checkpoint
 v0.8-network-graph
+
 
 
 

@@ -15,8 +15,8 @@
 | Module 9 — GNN | DEFERRED | — | — | Sufficient graph intelligence delivered via NetworkX |
 | Module 10 — NLP / spaCy | COMPLETE | 9/9 PASS | v0.9-risk-scoring | — |
 | Module 11 — Risk Scoring Engine | COMPLETE | 5/5 PASS | v0.9-risk-scoring | — |
-| Module 12 — Explainability / SHAP | NOT STARTED | — | — | After Module 11 |
-| Module 13 — "Why Flagged?" Engine | NOT STARTED | — | — | After Module 12 |
+| Module 12 — Explainability / SHAP | COMPLETE | 3/3 PASS | v1.0-explainability | — |
+| Module 13 — "Why Flagged?" Engine | COMPLETE | 3/3 PASS | v1.0-explainability | — |
 | Module 14 — Database | NOT STARTED | — | — | After AI core works |
 | Module 15 — FastAPI Backend | NOT STARTED | — | — | After Module 14 |
 | Module 16 — React Frontend | NOT STARTED | — | — | After Module 15 |
@@ -26,3 +26,4 @@
 `NOT STARTED` | `IN PROGRESS` | `TESTING` | `BLOCKED` | `COMPLETE` | `DEFERRED`
 
 > ⚠️ A module is NOT complete because code exists. It is COMPLETE only when implementation works, tests pass, edge cases are handled, and documentation exists.
+

@@ -13,16 +13,16 @@ IN PROGRESS
 Phase 3 — Network Intelligence & Risk Scoring
 
 ## Current Module
-Module 12 — Explainability / SHAP
+Module 14 — Database
 
 ## Current Task
-Implement SHAP for model explainability and "Why Flagged" validation.
+Design storage structure and schemas for AI outputs.
 
 ## Last Completed Module
-Module 11 — Risk Scoring Engine
+Module 13 — "Why Flagged?" Engine
 
 ## Last Stable Checkpoint
-v0.9-risk-scoring (2026-09-10)
+v1.0-explainability (2026-09-10)
 
 ## Repository Structure
 ```

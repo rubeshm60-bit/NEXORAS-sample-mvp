@@ -428,3 +428,8 @@ v0.8-network-graph
 - **File**: 	ests/test_risk_engine.py`n- **Result**: 5/5 PASS
 - **Coverage**: Normalization, Weights, Missing Signals, Tiers, Why Flagged.
 
+
+## Modules 12 & 13 - Explainability & Why Flagged
+- **File**: 	ests/test_explainability.py`n- **Result**: 3/3 PASS
+- **Coverage**: SHAP value generation, baseline extraction, report formatting.
+

@@ -12,14 +12,14 @@ NEXORAS
 SIH26102 — AI-powered anomaly, fraud and inefficiency detection in MPLAD Scheme
 
 ## CURRENT STATUS
-**Module 11 — Risk Scoring Engine: COMPLETE** (5/5 tests pass)
-Ready to begin Module 12 (Explainability / SHAP).
+**Module 13 - Why Flagged Engine: COMPLETE** (3/3 tests pass)
+Ready to begin Module 14 (Database).
 
 ## CURRENT MODULE
-Module 11 (COMPLETE) -> Starting Module 12 (SHAP)
+Modules 12 & 13 (COMPLETE) -> Starting Module 14 (Database)
 
 ## CURRENT TASK
-Implement SHAP for model explainability and "Why Flagged" validation.
+Design storage schemas (SQLite/PostgreSQL) and implement DB operations.
 
 ## WHAT WAS JUST COMPLETED
 - Module 10 — NLP Project Intelligence Engine
@@ -104,6 +104,7 @@ python "D:\sih 2026\sample mvp\NEXORAS-sample-mvp\tests\test_network_graph.py"
 4. Read docs/modules/module-08-networkx-graph.md
 5. Run tests/test_network_graph.py
 6. Proceed to implement Module 10 (NLP) & Module 11 (Unified Risk Engine)
+
 
 
 

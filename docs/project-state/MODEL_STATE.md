@@ -217,14 +217,15 @@ Weights: Tabular Anomaly Ensemble (25%), Vendor Network Risk (25%), NetworkX Gra
 
 ---
 
-## Model 8 — SHAP
+## Model 8 - Explainability / SHAP & Why Flagged?
 
 ### Status
-NOT STARTED
+COMPLETE (Modules 12 & 13, Checkpoint: v1.0-explainability)
 
 ### Purpose
-Explain WHY a project was flagged — which features contributed most to the risk score.
+Explain WHY a project was flagged by generating granular feature attributions and translating them into human-readable evidence.
 
-### Next Action
-Implement after ML models are working (Module 12)
+### Implementation
+1. ModelExplainer: Computes exact SHAP tree-path deviation scores for IsolationForest outputs.
+2. WhyFlaggedEngine: Maps mathematical risk contributions to raw data baselines.
 
