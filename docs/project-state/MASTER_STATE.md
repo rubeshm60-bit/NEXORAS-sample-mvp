@@ -13,16 +13,16 @@ IN PROGRESS
 Phase 3 — Network Intelligence & Risk Scoring
 
 ## Current Module
-Module 7 — Vendor Network Intelligence
+Module 8 — NetworkX Graph Engine
 
 ## Current Task
-Implement vendor network intelligence, contractor concentration metrics, and cross-constituency cartel detection
+Construct bipartite/tripartite NetworkX graph (MP ↔ Vendor ↔ IDA), compute centrality/PageRank, and detect collusion communities
 
 ## Last Completed Module
-Module 5 — Anomaly Ensemble
+Module 7 — Vendor Network Intelligence
 
 ## Last Stable Checkpoint
-v0.6-anomaly-ensemble (2026-09-10)
+v0.7-vendor-intelligence (2026-09-10)
 
 ## Repository Structure
 ```
@@ -65,7 +65,8 @@ CSV Dataset → Ingestion → Cleaning → Feature Engineering
 - Model 1 (Isolation Forest): COMPLETE (MPIsolationForest + WorkIsolationForest, 25/25 PASS)
 - Model 2 (Autoencoder): COMPLETE (MPAutoencoder in PyTorch, 26/26 PASS)
 - Model 3 (Anomaly Ensemble): COMPLETE (AnomalyEnsemble, 29/29 PASS)
-- Model 4 (Vendor Intelligence & Network Graph): IN PROGRESS next
+- Model 4 (Vendor Network Intelligence): COMPLETE (VendorNetworkIntelligence, 14/14 PASS)
+- Model 5 (NetworkX Graph Engine): IN PROGRESS next
 
 ## Backend
 - `backend/ingestion/loader.py`: Raw CSV loading, snake_case normalization, date parsing
@@ -75,6 +76,7 @@ CSV Dataset → Ingestion → Cleaning → Feature Engineering
 - `backend/engine/isolation_forest.py`: MPIsolationForest & WorkIsolationForest anomaly models
 - `backend/engine/autoencoder.py`: Deep neural reconstruction Autoencoder in PyTorch
 - `backend/engine/ensemble.py`: AnomalyEnsemble dual-signal consensus engine
+- `backend/engine/vendor_intelligence.py`: VendorNetworkIntelligence entity modeling & cartel detection
 
 ## Frontend
 Not started
@@ -90,9 +92,10 @@ Not decided — SQLite for MVP, PostgreSQL for production
 - Module 4A: Isolation Forest (25/25 PASS, checkpoint: v0.4-isolation-forest)
 - Module 4B: Autoencoder (26/26 PASS, checkpoint: v0.5-autoencoder)
 - Module 5: Anomaly Ensemble (29/29 PASS, checkpoint: v0.6-anomaly-ensemble)
+- Module 7: Vendor Network Intelligence (14/14 PASS, checkpoint: v0.7-vendor-intelligence)
 
 ## Modules In Progress
-- Module 7: Vendor Network Intelligence (Module 6 XGBoost evaluated as unnecessary without ground-truth fraud labels)
+- Module 8: NetworkX Graph Engine
 
 ## Blocked Modules
 None
@@ -119,14 +122,15 @@ None
 - Module 4A test suite (`tests/test_isolation_forest.py`): 25/25 PASS
 - Module 4B test suite (`tests/test_autoencoder.py`): 26/26 PASS
 - Module 5 test suite (`tests/test_ensemble.py`): 29/29 PASS
+- Module 7 test suite (`tests/test_vendor_intelligence.py`): 14/14 PASS
 
 ## Next 3 Actions
-1. Implement Module 7 (`backend/engine/vendor_intelligence.py`): vendor risk profiling, cross-constituency cartel detection, and payout concentration
-2. Implement Module 8 (`backend/engine/network_graph.py`): NetworkX bipartite and multi-partite graph construction (MP-Vendor-Project)
-3. Document in `docs/modules/` and tag checkpoints
+1. Implement Module 8 (`backend/engine/network_graph.py`): NetworkX bipartite and multi-partite graph construction (MP-Vendor-Project), centrality, PageRank, and community detection
+2. Create unit tests for Module 8 (`tests/test_network_graph.py`) and document in `docs/modules/`
+3. Advance to NLP / Project Description matching (Module 10) & Unified Risk Scoring Engine (Module 11)
 
 ## EXACT NEXT TASK
-Implement Module 7 & 8: Vendor Network Intelligence and NetworkX Graph Engine.
+Implement Module 8: NetworkX Graph Engine.
 
 ## Last Updated
-2026-09-10T20:28 IST
+2026-09-10T20:45 IST

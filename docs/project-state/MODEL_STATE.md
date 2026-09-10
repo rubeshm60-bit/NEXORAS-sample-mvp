@@ -118,24 +118,48 @@ NOT STARTED
 Supervised risk classifier IF valid labeled data exists.
 
 ### Feasibility
-UNKNOWN — depends on whether proxy labels can be generated from the dataset.
-Rule: If no reliable labels exist, do NOT pretend XGBoost is a fraud classifier.
+Supervised ground-truth fraud labels do not exist in the open portal dataset. Per DECISION-002, NEXORAS relies on unsupervised ensemble + vendor graph intelligence rather than synthetic labels.
 
 ### Next Action
-Evaluate after dataset inspection (Module 1)
+Bypassed / merged into unsupervised risk scoring pipeline.
 
 ---
 
-## Model 4 — NetworkX Graph Engine
+## Model 4 — Vendor Network Intelligence
 
 ### Status
-NOT STARTED
+COMPLETE (Module 7, Checkpoint: v0.7-vendor-intelligence)
 
 ### Purpose
-Build entity relationship graph (MP → Project → Vendor/IA). Detect vendor concentration, unusual relationships.
+Entity-relationship modeling, contractor profiling, cartel/syndicate identification, and risk signal generation across 28,206 vendors.
+
+### Patterns Detected
+1. `MULTI_MP_SYNDICATE`: 134 vendors active across $\ge 3$ MPs and $\ge 2$ states ($\ge ₹5\text{ Lakh}$)
+2. `MONOPOLY_CONTRACTOR`: 116 instances where single vendor captures $\ge 50\%$ of an MP's spending
+3. `IDA_EXCLUSIVE_CONDUIT`: 88 instances where single vendor captures $\ge 60\%$ of an agency's disbursements
+4. `HIGH_IN_PROGRESS_RISK`: Vendors with high ratio & volume of incomplete payments
+5. `HIGH_VALUE_OUTLIER`: Top 1% national payout contractors
+
+### Output & Metrics
+- Composite Vendor Risk Score ($0.0 \text{ to } 100.0$)
+- 4 Risk Tiers: `HIGH_RISK` (8), `MEDIUM_RISK` (213), `LOW_RISK` (71), `BENIGN` (27,914)
+- Total audit candidates: 292 vendors requiring audit review
 
 ### Next Action
-Build after Module 3
+Module 8 — NetworkX Graph Engine
+
+---
+
+## Model 5 — NetworkX Graph Engine
+
+### Status
+IN PROGRESS
+
+### Purpose
+Build bipartite/tripartite NetworkX graph (MP ↔ Vendor ↔ IDA), compute centrality, PageRank, and detect collusion communities.
+
+### Next Action
+Construct graph and compute node/edge risk metrics (Module 8)
 
 ---
 
