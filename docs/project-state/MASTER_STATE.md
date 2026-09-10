@@ -10,19 +10,19 @@ SIH26102 — Development of an AI-powered system to detect anomalies, fraud, and
 IN PROGRESS
 
 ## Current Phase
-Phase 0 — Workspace Setup & Project Scaffolding
+Phase 1 — Data Pipeline & Feature Engineering
 
 ## Current Module
-Module 0 — System Understanding
+Module 3 — Feature Engineering
 
 ## Current Task
-Initialize project state system and folder scaffold
+Design and implement financial, temporal, and vendor network features from cleaned datasets
 
 ## Last Completed Module
-None
+Module 2 — Data Cleaning & Validation
 
 ## Last Stable Checkpoint
-v0.0-workspace-init (2026-09-10)
+v0.2-data-cleaning (2026-09-10)
 
 ## Repository Structure
 ```
@@ -62,10 +62,12 @@ CSV Dataset → Ingestion → Cleaning → Feature Engineering
 - Status: RAW — not yet loaded or cleaned
 
 ## Implemented Models
-None
+None (Feature Engineering in progress next)
 
 ## Backend
-Not started
+- `backend/ingestion/loader.py`: Raw CSV loading, snake_case normalization, date parsing
+- `backend/ingestion/validator.py`: Integrity validation
+- `backend/cleaning/cleaner.py`: Deduplication, missing value imputation, string stripping
 
 ## Frontend
 Not started
@@ -74,10 +76,12 @@ Not started
 Not decided — SQLite for MVP, PostgreSQL for production
 
 ## Completed Modules
-None
+- Module 0: System Understanding & Workspace Init
+- Module 1: Data Ingestion (21/21 PASS, checkpoint: v0.1-data-ingestion)
+- Module 2: Data Cleaning & Validation (25/25 PASS, checkpoint: v0.2-data-cleaning)
 
 ## Modules In Progress
-- Module 0: System Understanding / Workspace Init
+- Module 3: Feature Engineering
 
 ## Blocked Modules
 None
@@ -92,23 +96,30 @@ None
 
 ## Known Limitations
 - No labeled fraud data — unsupervised models only for now
-- Dataset is state-level summary only (no work-level vendor/IA data yet)
+- Expenditures dataset required removing 32,382 duplicate rows (handled in cleaning)
 
 ## Important Decisions
 - DECISION-001: Use SQLite for MVP, not PostgreSQL (avoid infra overhead)
 - DECISION-002: Start with Isolation Forest + Autoencoder before GNN
 - DECISION-003: GNN deferred until NetworkX proves graph data is sufficient
+- DECISION-004: Remove Airflow and Redis from MVP scope
+- DECISION-005: Drop `average_rating` column (>99% null)
+- DECISION-006: Treat duplicate records in raw expenditures as WARNING for cleaning
+- DECISION-007: Preserve zero-allocation MPs with audit warning
+- DECISION-008: Impute missing descriptions rather than dropping rows
+- DECISION-009: Standardize missing categories to `"Uncategorized"`
 
 ## Latest Test Status
-No tests run yet
+- Module 1 test suite (`tests/test_ingestion.py`): 21/21 PASS
+- Module 2 test suite (`tests/test_cleaning.py`): 25/25 PASS
 
 ## Next 3 Actions
-1. Inspect and profile the 4 CSV datasets (column names, types, missing values)
-2. Create Module 1 — Data Ingestion script
-3. Create DATA_STATE.md from real dataset inspection
+1. Commit checkpoint `v0.2-data-cleaning`
+2. Implement Module 3 (`backend/features/builder.py`): engineer financial ratios, contractor concentration, and timing metrics
+3. Create and execute feature engineering test suite (`tests/test_features.py`)
 
 ## EXACT NEXT TASK
-Run EDA on `mplads_mp_summary_2026-09-10.csv` first (smallest file), then the larger CSVs. Profile all 4 datasets and fill in DATA_STATE.md.
+Implement Module 3 — Feature Engineering: build financial ratios, vendor concentration indices, and anomaly baseline features.
 
 ## Last Updated
-2026-09-10T18:07 IST
+2026-09-10T19:28 IST

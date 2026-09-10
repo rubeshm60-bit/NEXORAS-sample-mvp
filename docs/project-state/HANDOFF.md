@@ -12,57 +12,64 @@ NEXORAS
 SIH26102 — AI-powered anomaly, fraud and inefficiency detection in MPLAD Scheme
 
 ## CURRENT STATUS
-**Module 1 — Data Ingestion: COMPLETE** (21/21 tests pass)
-Ready to begin Module 2 — Data Cleaning & Validation.
+**Module 2 — Data Cleaning & Validation: COMPLETE** (25/25 tests pass)
+Ready to begin Module 3 — Feature Engineering.
 
 ## CURRENT MODULE
-Module 1 (COMPLETE) → Starting Module 2 — Data Cleaning & Validation
+Module 2 (COMPLETE) → Starting Module 3 — Feature Engineering
 
 ## CURRENT TASK
-Deduplicate expenditures dataset (32,382 duplicate rows) and validate all data
+Design and construct multi-view feature vectors across cleaned tables:
+1. Financial ratios (utilization, velocity, expenditure vs recommendation gap)
+2. Vendor concentration index (Herfindahl-Hirschman Index per MP / constituency)
+3. Project delivery speed & timeline deviation features
+4. Cost deviation relative to work category median
 
 ## WHAT WAS JUST COMPLETED
-- Module 1 — Data Ingestion
-- 4 CSV datasets profiled and loaded successfully
-- loader.py: snake_case column normalization, date parsing, useless column dropping
-- validator.py: integrity checks (empty cols, duplicates, nulls)
-- 21/21 tests pass
-- DATA_STATE.md populated with actual column profiles
-- Tagged v0.1-data-ingestion
+- Module 2 — Data Cleaning & Validation
+- Deduplicated `expenditures` (108,695 -> 76,313 unique rows, 32,382 duplicates removed)
+- Imputed missing `work_description` values with `"[No description]"`
+- Standardized missing categories to `"Uncategorized"`
+- Verified financial validity (0 negative amounts)
+- 25/25 unit tests pass in `tests/test_cleaning.py`
+- Documented in `docs/modules/module-02-data-cleaning.md`
+- Checkpoint: `v0.2-data-cleaning`
 
-## FILES CHANGED (Module 1)
-- backend/__init__.py (new)
-- backend/ingestion/__init__.py (new)
-- backend/ingestion/loader.py (new — core data loader)
-- backend/ingestion/validator.py (new — data integrity checks)
-- tests/test_ingestion.py (new — 21 tests)
-- notebooks/01_inspect_data.py (new — profiling script)
-- docs/modules/module-01-data-ingestion.md (new)
-- docs/project-state/DATA_STATE.md (updated with real column profiles)
-- docs/project-state/MODULE_STATUS.md (updated)
-- .gitignore (new)
+## FILES CHANGED (Module 2)
+- `backend/cleaning/__init__.py` (new)
+- `backend/cleaning/cleaner.py` (new — core cleaning engine)
+- `tests/test_cleaning.py` (new — 25 unit tests)
+- `notebooks/02_cleaning_analysis.py` (new — pre-cleaning analysis)
+- `docs/modules/module-02-data-cleaning.md` (new)
+- `docs/project-state/MODULE_STATUS.md` (updated)
+- `docs/project-state/MASTER_STATE.md` (updated)
+- `docs/project-state/CURRENT_SESSION.md` (updated)
+- `docs/project-state/DECISIONS.md` (updated)
+- `docs/project-state/TEST_RESULTS.md` (updated)
+- `docs/project-state/CHANGELOG.md` (updated)
+- `.gitignore` (updated)
 
 ## IMPORTANT CODE LOCATIONS
 - Data loader: `backend/ingestion/loader.py`
-  - `load_all()` returns dict of 4 DataFrames
-  - `load_mp_summary()`, `load_completed_works()`, `load_expenditures()`, `load_recommended_works()`
 - Data validator: `backend/ingestion/validator.py`
-- Tests: `tests/test_ingestion.py`
+- Data cleaner: `backend/cleaning/cleaner.py` (`clean_all()`)
+- Ingestion tests: `tests/test_ingestion.py`
+- Cleaning tests: `tests/test_cleaning.py`
 - Dataset CSVs: `D:\sih 2026\mplads dataset\`
 
-## DATASET STATE (CONFIRMED)
-| Dataset | Rows | Cols | Dupes | Key Fields |
-|---|---|---|---|---|
-| mp_summary | 774 | 15 | 0 | MP-level summary stats |
-| completed_works | 44,028 | 11 | 0 | work_id, work_description, final_amount |
-| expenditures | 108,695 | 10 | 32,382 (29.8%) | vendor (!), expenditure_amount |
-| recommended_works | 87,272 | 11 | 0 | work_id, recommended_amount |
+## DATASET STATE (CLEANED)
+| Dataset | Rows Raw | Rows Cleaned | Null Handling |
+|---|---|---|---|
+| mp_summary | 774 | 774 | Clean, 1 zero-allocation MP preserved |
+| expenditures | 108,695 | 76,313 | 32,382 duplicate rows removed |
+| completed_works | 44,028 | 44,028 | 85 null descriptions imputed, 5 null cats -> Uncategorized |
+| recommended_works | 87,272 | 87,272 | 52 null descriptions imputed, 5 null cats -> Uncategorized |
 
 ## MODEL STATE
-All NOT STARTED. See MODEL_STATE.md.
+All NOT STARTED. See MODEL_STATE.md. Next is Feature Engineering (Module 3).
 
 ## KNOWN BUGS
-- expenditures has 32,382 true duplicate rows (to be removed in Module 2)
+None.
 
 ## IMPORTANT DECISIONS
 - DECISION-001: SQLite for MVP
@@ -70,39 +77,38 @@ All NOT STARTED. See MODEL_STATE.md.
 - DECISION-003: GNN deferred
 - DECISION-004: Airflow/Redis removed
 - DECISION-005: Dropped average_rating column (>99% null)
-- DECISION-006: Expenditure duplicate threshold = WARNING at 29.8% (not CRITICAL — true export artifacts)
+- DECISION-006: Duplicate threshold = WARNING at 29.8% in raw ingestion
+- DECISION-007: Preserve zero-allocation MPs with audit warning
+- DECISION-008: Impute missing descriptions with `"[No description]"`
+- DECISION-009: Standardize missing categories to `"Uncategorized"`
 
 ## LAST STABLE CHECKPOINT
-**v0.1-data-ingestion** (2026-09-10)
+**v0.2-data-cleaning** (2026-09-10)
 
 ## WHAT MUST NOT BE CHANGED
-- loader.py column normalization logic (downstream code depends on snake_case names)
-- Dataset file paths
+- `backend/ingestion/loader.py` output format and snake_case schema
+- `backend/cleaning/cleaner.py` deduplication logic and input/output contracts
 
 ## WHAT IS SAFE TO CHANGE
-- Validation thresholds in validator.py
-- Test expected row counts (data may be updated)
+- Feature engineering parameters and formula definitions in Module 3
 
 ## EXACT NEXT STEP
-1. Create `backend/cleaning/cleaner.py`
-2. Deduplicate expenditures (drop_duplicates)
-3. Handle the 1 null work_description in recommended_works
-4. Validate cleaned data
-5. Create tests for cleaning
-6. Update state files
-7. Tag v0.2-data-cleaning
+1. Implement `backend/features/builder.py` for Module 3
+2. Build unit tests in `tests/test_features.py`
+3. Verify feature distributions and ensure no NaN/Inf values
+4. Document in `docs/modules/module-03-feature-engineering.md`
+5. Tag `v0.3-feature-engineering`
 
 ## COMMAND TO VERIFY CURRENT STATE
 ```bash
-git -C "D:\sih 2026\sample mvp\NEXORAS-sample-mvp" log --oneline -5
-python "D:\sih 2026\sample mvp\NEXORAS-sample-mvp\tests\test_ingestion.py"
+python "D:\sih 2026\sample mvp\NEXORAS-sample-mvp\tests\test_cleaning.py"
 ```
 
 ## HOW TO CONTINUE
 1. Read docs/project-state/MASTER_STATE.md
 2. Read docs/project-state/MODULE_STATUS.md
 3. Read this HANDOFF.md
-4. Read docs/project-state/DATA_STATE.md
-5. Inspect Git status
-6. Run tests/test_ingestion.py to verify current state
-7. Continue from EXACT NEXT STEP above
+4. Read docs/modules/module-02-data-cleaning.md
+5. Run tests/test_cleaning.py
+6. Proceed to implement Module 3 feature engineering
+

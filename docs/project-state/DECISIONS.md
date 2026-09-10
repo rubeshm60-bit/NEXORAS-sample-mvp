@@ -43,3 +43,56 @@
 **Future Migration:** Airflow/Celery can be added for production scheduling
 
 ---
+
+## DECISION-005
+**Date:** 2026-09-10
+**Topic:** Dropping unpopulated rating column
+**Decision:** Drop `average_rating` column across all datasets during ingestion
+**Reason:** The column is >99% null across all datasets (100% in completed works, 770/774 in mp_summary) and provides no diagnostic value for fraud detection.
+**Alternatives Considered:** Keep and impute with 0 or mean
+**Consequence:** Cleaner DataFrame schemas without misleading null-heavy columns
+**Future Migration:** If rating system becomes active in future eSAKSHI exports, column can be re-enabled
+
+---
+
+## DECISION-006
+**Date:** 2026-09-10
+**Topic:** Duplicate threshold in data validator
+**Decision:** Treat duplicate percentage in expenditures as WARNING rather than CRITICAL in raw ingestion
+**Reason:** Raw expenditure export from eSAKSHI contains 32,382 exact duplicate rows (29.8%) due to multi-batch export artifacts. Raising CRITICAL threshold to 50% allows raw loading to pass while handing deduplication to Module 2.
+**Alternatives Considered:** Block ingestion on duplicates
+**Consequence:** Ingestion accepts raw government exports and cleaning stage explicitly cleans them
+**Future Migration:** Validator retains warnings for visibility
+
+---
+
+## DECISION-007
+**Date:** 2026-09-10
+**Topic:** Zero-allocation MP records
+**Decision:** Flag but preserve MPs with zero allocated amount (e.g. Chavan Vasantrao Balwantrao)
+**Reason:** MPs with zero allocation are valid representatives (e.g. newly elected, bye-elections, or unallocated portfolios). Dropping them distorts overall constituency coverage and national aggregates.
+**Alternatives Considered:** Drop zero-allocation MP records
+**Consequence:** Downstream models must handle division by zero (e.g. expenditure / allocation) using safe division safeguards
+**Future Migration:** Keep audit flags for zero-allocation MPs
+
+---
+
+## DECISION-008
+**Date:** 2026-09-10
+**Topic:** Imputation of missing work descriptions
+**Decision:** Impute null `work_description` with `"[No description]"` rather than dropping rows
+**Reason:** Only 85 rows in completed_works and 52 in recommended_works lack text descriptions. The financial values and IDs are valid. Dropping them would discard legitimate financial data.
+**Alternatives Considered:** Drop rows with missing descriptions
+**Consequence:** Financial analysis retains full transaction volume; NLP pipeline will treat `"[No description]"` as neutral
+**Future Migration:** Flag missing description works as documentation irregularities in risk engine
+
+---
+
+## DECISION-009
+**Date:** 2026-09-10
+**Topic:** Standardization of missing work categories
+**Decision:** Impute NaN work categories as `"Uncategorized"`
+**Reason:** 5 rows in completed_works and 5 in recommended_works have NaN category. Standardizing to a string `"Uncategorized"` prevents categorical grouping and encoding errors in feature engineering.
+**Alternatives Considered:** Drop rows or impute to mode ("Normal/Others")
+**Consequence:** Explicit categorization allows tracking works that lacked administrative classification
+**Future Migration:** Can use NLP on description to automatically predict category in future

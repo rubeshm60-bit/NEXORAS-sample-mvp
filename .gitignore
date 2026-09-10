@@ -28,7 +28,9 @@ Thumbs.db
 
 # Test artifacts (keep test scripts, exclude output logs)
 tests/test_output*.txt
+tests/test_cleaning_output.txt
 tests/dup_analysis.txt
+tests/cleaning_analysis.txt
 notebooks/inspect_output.txt
 
 # ML model artifacts
