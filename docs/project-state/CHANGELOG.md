@@ -146,5 +146,29 @@ v0.4-isolation-forest
 ### Checkpoint
 v0.5-autoencoder
 
+---
+
+## 2026-09-10 (Module 5)
+
+### Added
+- `backend/engine/ensemble.py`: Multi-model Anomaly Ensemble Engine:
+  - Synthesizes tree partitioning (`MPIsolationForest`) and neural reconstruction (`MPAutoencoder`)
+  - Calculates calibrated consensus risk scores $S_{\text{ensemble}} \in [0.0, 1.0]$
+  - Classifies constituencies into 4 mutual exclusive confidence tiers: `CRITICAL_CONSENSUS` (28 MPs), `TREE_ISOLATED` (34 MPs), `NEURAL_IRREGULARITY` (34 MPs), `NORMAL` (678 MPs)
+  - Computes model divergence $D = |S_{\text{IF}} - S_{\text{AE}}|$ to surface ambiguous boundary cases
+  - Assigns deterministic national audit priority rank (1 to 774)
+  - Full pipeline runner `run_ensemble_pipeline()` combining all 4 datasets and 3 ML models
+- `tests/test_ensemble.py`: 29-test comprehensive validation suite (29/29 PASS)
+- `docs/modules/module-05-anomaly-ensemble.md`: Full documentation of Module 5
+
+### Verified
+- Zero NaNs or Infs across consensus scores and disagreement metrics
+- Complete mutually exclusive tier assignment for all 774 MPs
+- Risk separation: Critical consensus anomalies score $> 2\times$ higher than normal MPs
+
+### Checkpoint
+v0.6-anomaly-ensemble
+
+
 
 

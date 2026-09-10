@@ -247,6 +247,69 @@ PASS
 ## Commit / Checkpoint
 v0.5-autoencoder
 
+---
+# TEST SESSION — 2026-09-10 (Module 5: Anomaly Ensemble Engine)
+
+## Module
+Module 5 — Anomaly Ensemble
+
+## Command
+```bash
+python tests/test_ensemble.py
+```
+
+## Tests Run
+29
+
+## Passed
+29
+
+## Failed
+0
+
+## Edge Cases Tested
+- Multi-model consensus score synthesis: $S_{\text{ensemble}} = 0.5 \cdot S_{\text{IF}} + 0.5 \cdot S_{\text{AE}}$
+- Strict bounding of ensemble scores in $[0.0, 1.0]$ with zero NaNs or Infs
+- Disagreement metric calculation ($D = |S_{\text{IF}} - S_{\text{AE}}|$) in $[0.0, 1.0]$
+- Exhaustive and mutually exclusive tier assignment across 4 tiers:
+  - `CRITICAL_CONSENSUS` (both flag: 28 MPs)
+  - `TREE_ISOLATED` (IF only: 34 MPs)
+  - `NEURAL_IRREGULARITY` (AE only: 34 MPs)
+  - `NORMAL` (neither flags: 678 MPs)
+- Total audit candidates: 96 MPs flagged ($12.4\%$ of total parliamentarians)
+- Risk separation: Critical consensus anomalies score $> 2\times$ higher than normal MPs
+- Priority ranking: Deterministic integer ranking from 1 to 774 with Rank 1 matching top ensemble score
+- Full end-to-end multi-dataset, multi-model execution pipeline
+
+## Output
+```
+NEXORAS — Module 5: Running End-to-End Anomaly Ensemble Pipeline
+  Fitting MPIsolationForest on 774 MPs with 9 features...
+  Fitting WorkIsolationForest on 44028 works with 3 features...
+  Fitting MPAutoencoder (PYTORCH) on 774 MPs with 9 features...
+  Training complete: Initial Loss=1.0050, Final Loss=0.1437
+  Calibrated Anomaly Threshold=0.3743 (MSE > threshold = anomaly)
+ENSEMBLE CONSENSUS MATRIX:
+  Critical Consensus Anomalies (Both Flag): 28 MPs
+  Tree-Isolated Outliers (IF Only):         34 MPs
+  Neural Irregularities (AE Only):          34 MPs
+  Normal Constituencies (Neither Flag):     678 MPs
+  Total Flagged Audit Candidates:          96 MPs
+
+RESULTS: 29/29 tests passed, 0 failed
+ALL TESTS PASSED
+```
+
+## Bugs Found
+- None. All 29 checks passed on initial run.
+
+## Final Status
+PASS
+
+## Commit / Checkpoint
+v0.6-anomaly-ensemble
+
+
 
 
 

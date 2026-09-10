@@ -82,7 +82,34 @@ Module 5 — Anomaly Ensemble (combining Isolation Forest and Autoencoder)
 
 ---
 
-## Model 3 — XGBoost
+## Model 3 — Anomaly Ensemble
+
+### Status
+COMPLETE (Module 5, Checkpoint: v0.6-anomaly-ensemble)
+
+### Purpose
+Dual-engine consensus synthesizer that blends Isolation Forest ($w=0.5$) and PyTorch Autoencoder ($w=0.5$) continuous anomaly scores into calibrated consensus tiers.
+
+### Models Synthesized
+1. `MPIsolationForest` (Tree-based orthogonal recursive partitioning)
+2. `MPAutoencoder` (Deep bottleneck neural reconstruction MSE)
+
+### Output Schema
+- `ensemble_score`: float in $[0.0, 1.0]$
+- `ensemble_tier`: `CRITICAL_CONSENSUS` (28 MPs), `TREE_ISOLATED` (34 MPs), `NEURAL_IRREGULARITY` (34 MPs), `NORMAL` (678 MPs)
+- `model_disagreement`: $|S_{\text{IF}} - S_{\text{AE}}|$
+- `audit_priority_rank`: 1 to 774
+
+### Test Results
+- Unit tests: 29/29 PASS in `tests/test_ensemble.py`
+
+### Next Action
+Module 6 & 7 — Vendor Network Intelligence & Graph Analysis
+
+---
+
+## Model 4 — XGBoost
+
 
 ### Status
 NOT STARTED

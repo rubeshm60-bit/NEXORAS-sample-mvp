@@ -8,9 +8,9 @@
 | Module 3 — Feature Engineering | COMPLETE | 27/27 PASS | v0.3-feature-engineering | — |
 | Module 4A — Isolation Forest | COMPLETE | 25/25 PASS | v0.4-isolation-forest | — |
 | Module 4B — Autoencoder | COMPLETE | 26/26 PASS | v0.5-autoencoder | — |
-| Module 5 — Anomaly Ensemble | NOT STARTED | — | — | After Module 4B |
+| Module 5 — Anomaly Ensemble | COMPLETE | 29/29 PASS | v0.6-anomaly-ensemble | — |
 | Module 6 — XGBoost (Supervised) | NOT STARTED | — | — | Feasibility TBD |
-| Module 7 — Vendor Network Intelligence | NOT STARTED | — | — | After Module 3 |
+| Module 7 — Vendor Network Intelligence | NOT STARTED | — | — | After Module 5 |
 | Module 8 — NetworkX Graph Engine | NOT STARTED | — | — | After Module 7 |
 | Module 9 — GNN | DEFERRED | — | — | After NetworkX proves sufficient |
 | Module 10 — NLP / spaCy | NOT STARTED | — | — | After dataset text inspection |
