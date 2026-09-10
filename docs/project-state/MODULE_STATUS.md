@@ -18,7 +18,7 @@
 | Module 12 — Explainability / SHAP | COMPLETE | 3/3 PASS | v1.0-explainability | — |
 | Module 13 — "Why Flagged?" Engine | COMPLETE | 3/3 PASS | v1.0-explainability | — |
 | Module 14 — Database | COMPLETE | 3/3 PASS | v1.1-database | — |
-| Module 15 — FastAPI Backend | NOT STARTED | — | — | After Module 14 |
+| Module 15 — FastAPI Backend | COMPLETE | 6/6 PASS | v1.2-fastapi | — |
 | Module 16 — React Frontend | NOT STARTED | — | — | After Module 15 |
 | Module 17 — Integration | NOT STARTED | — | — | After Module 16 |
 

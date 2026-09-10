@@ -2,6 +2,13 @@
 
 ## 2026-09-10
 
+### v1.2-fastapi (2026-09-10)
+- Implemented Module 15 (FastAPI Backend).
+- Defined Pydantic schemas in schemas.py.
+- Added endpoints for dashboard, projects, anomalies, vendors, and network in main.py.
+- Added 100% passing API tests using TestClient.
+
+
 ### v1.1-database (2026-09-10)
 - Implemented Module 14 (Database) with SQLAlchemy.
 - Created normalized relational schema (MP, Project, Vendor, Agency, Payments).
@@ -242,6 +249,7 @@ v0.7-vendor-intelligence
 
 ### Checkpoint
 v0.8-network-graph
+
 
 
 

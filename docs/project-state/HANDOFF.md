@@ -12,14 +12,14 @@ NEXORAS
 SIH26102 — AI-powered anomaly, fraud and inefficiency detection in MPLAD Scheme
 
 ## CURRENT STATUS
-**Module 14 - Database: COMPLETE** (3/3 tests pass)
-Ready to begin Module 15 (FastAPI Backend).
+**Module 15 - FastAPI Backend: COMPLETE** (6/6 tests pass)
+Ready to begin Module 16 (React Frontend).
 
 ## CURRENT MODULE
-Module 14 (COMPLETE) -> Starting Module 15 (FastAPI Backend)
+Module 15 (COMPLETE) -> Starting Module 16 (React Frontend)
 
 ## CURRENT TASK
-Create REST APIs for the dashboard, projects, vendors, anomalies, and network.
+Build React frontend components, routing, and Cytoscape.js visualizations.
 
 ## WHAT WAS JUST COMPLETED
 - Module 10 — NLP Project Intelligence Engine
@@ -104,6 +104,7 @@ python "D:\sih 2026\sample mvp\NEXORAS-sample-mvp\tests\test_network_graph.py"
 4. Read docs/modules/module-08-networkx-graph.md
 5. Run tests/test_network_graph.py
 6. Proceed to implement Module 10 (NLP) & Module 11 (Unified Risk Engine)
+
 
 
 

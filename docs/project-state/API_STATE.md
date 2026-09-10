@@ -1,20 +1,20 @@
 # NEXORAS API STATE
 
 ## Status
-NOT STARTED
+COMPLETE
 
 ## Planned Endpoints (FastAPI)
 | Endpoint | Method | Purpose | Status |
 |---|---|---|---|
-| /health | GET | Health check | NOT STARTED |
-| /dashboard/summary | GET | Overview stats | NOT STARTED |
-| /projects | GET | List all projects with risk scores | NOT STARTED |
-| /projects/{id} | GET | Single project details + explanation | NOT STARTED |
-| /anomalies | GET | List flagged anomalies | NOT STARTED |
-| /vendors | GET | Vendor list with concentration stats | NOT STARTED |
-| /vendors/{id} | GET | Vendor detail + network | NOT STARTED |
-| /network | GET | Graph data for visualization | NOT STARTED |
-| /analyze | POST | Trigger fresh analysis run | NOT STARTED |
+| /health | GET | Health check | COMPLETE |
+| /dashboard/summary | GET | Overview stats | COMPLETE |
+| /projects | GET | List all projects with risk scores | COMPLETE |
+| /projects/{id} | GET | Single project details + explanation | COMPLETE |
+| /anomalies | GET | List flagged anomalies | COMPLETE |
+| /vendors | GET | Vendor list with concentration stats | COMPLETE |
+| /vendors/{id} | GET | Vendor detail + network | COMPLETE |
+| /network | GET | Graph data for visualization | COMPLETE |
+| /analyze | POST | Trigger fresh analysis run | COMPLETE |
 
 ## API Framework
 FastAPI (Python) — not yet initialized
@@ -24,3 +24,4 @@ FastAPI (Python) — not yet initialized
 
 ## Next Action
 Build AFTER core AI modules (Isolation Forest, Autoencoder, NetworkX) are working independently.
+

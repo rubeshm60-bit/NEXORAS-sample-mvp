@@ -438,3 +438,8 @@ v0.8-network-graph
 - **File**: 	ests/test_database.py`n- **Result**: 3/3 PASS
 - **Coverage**: Entity creation, ORM relationships (MP, Project, Vendor, Agency, RiskScores).
 
+
+## Module 15 - FastAPI Backend
+- **File**: 	ests/test_api.py`n- **Result**: 6/6 PASS
+- **Coverage**: Endpoints (health, dashboard, projects, anomalies, network).
+

@@ -13,16 +13,16 @@ IN PROGRESS
 Phase 3 — Network Intelligence & Risk Scoring
 
 ## Current Module
-Module 15 — FastAPI Backend
+Module 16 — React Frontend
 
 ## Current Task
-Create backend REST APIs for dashboard, projects, vendors, anomalies, and network data.
+Build React dashboard, project explorer, and Cytoscape.js network visualization.
 
 ## Last Completed Module
-Module 14 — Database
+Module 15 — FastAPI Backend
 
 ## Last Stable Checkpoint
-v1.1-database (2026-09-10)
+v1.2-fastapi (2026-09-10)
 
 ## Repository Structure
 ```
