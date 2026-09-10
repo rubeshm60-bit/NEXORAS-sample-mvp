@@ -433,3 +433,8 @@ v0.8-network-graph
 - **File**: 	ests/test_explainability.py`n- **Result**: 3/3 PASS
 - **Coverage**: SHAP value generation, baseline extraction, report formatting.
 
+
+## Module 14 - Database
+- **File**: 	ests/test_database.py`n- **Result**: 3/3 PASS
+- **Coverage**: Entity creation, ORM relationships (MP, Project, Vendor, Agency, RiskScores).
+

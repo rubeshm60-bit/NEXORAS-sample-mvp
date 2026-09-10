@@ -2,6 +2,13 @@
 
 ## 2026-09-10
 
+### v1.1-database (2026-09-10)
+- Implemented Module 14 (Database) with SQLAlchemy.
+- Created normalized relational schema (MP, Project, Vendor, Agency, Payments).
+- Created intelligence tables (RiskScores, Explanations).
+- Added 100% passing tests for ORM relationships.
+
+
 ### v1.0-explainability (2026-09-10)
 - Implemented Module 12 (Explainability / SHAP) with shap.TreeExplainer.
 - Implemented Module 13 (Why Flagged Engine) for human-readable evidence.
@@ -235,6 +242,7 @@ v0.7-vendor-intelligence
 
 ### Checkpoint
 v0.8-network-graph
+
 
 
 

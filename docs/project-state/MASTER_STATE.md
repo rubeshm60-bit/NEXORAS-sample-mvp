@@ -13,16 +13,16 @@ IN PROGRESS
 Phase 3 — Network Intelligence & Risk Scoring
 
 ## Current Module
-Module 14 — Database
+Module 15 — FastAPI Backend
 
 ## Current Task
-Design storage structure and schemas for AI outputs.
+Create backend REST APIs for dashboard, projects, vendors, anomalies, and network data.
 
 ## Last Completed Module
-Module 13 — "Why Flagged?" Engine
+Module 14 — Database
 
 ## Last Stable Checkpoint
-v1.0-explainability (2026-09-10)
+v1.1-database (2026-09-10)
 
 ## Repository Structure
 ```
