@@ -13,10 +13,20 @@ from backend.db.database import get_db, engine
 from backend.db.models import MP, Project, Vendor, Agency, ProjectRiskScore, VendorRiskProfile
 from backend.api import schemas
 
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI(
     title="NEXORAS API",
     description="AI-powered anomaly detection in MPLADS",
     version="1.0.0"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins for the MVP
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 @app.get("/health", response_model=schemas.HealthResponse)
