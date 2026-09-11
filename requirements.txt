@@ -1,0 +1,11 @@
+fastapi==0.115.*
+uvicorn==0.32.*
+sqlalchemy==2.0.*
+pydantic==2.*
+pydantic-settings
+pandas
+numpy
+scikit-learn
+networkx
+shap
+httpx

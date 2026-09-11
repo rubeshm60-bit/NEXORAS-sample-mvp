@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
+
 export default function VendorIntelligence() {
   const [vendors, setVendors] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/vendors?limit=50')
+    axios.get(`${API_URL}/vendors?limit=50`)
       .then(res => {
         setVendors(res.data.items);
         setLoading(false);
@@ -58,3 +61,4 @@ export default function VendorIntelligence() {
     </div>
   );
 }
+

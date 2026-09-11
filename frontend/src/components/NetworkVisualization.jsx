@@ -2,12 +2,15 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import CytoscapeComponent from 'react-cytoscapejs';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
+
 export default function NetworkVisualization() {
   const [elements, setElements] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/network')
+    axios.get(`${API_URL}/network`)
       .then(res => {
         const { nodes, edges } = res.data;
         setElements([...nodes, ...edges]);
@@ -74,3 +77,4 @@ export default function NetworkVisualization() {
     </div>
   );
 }
+

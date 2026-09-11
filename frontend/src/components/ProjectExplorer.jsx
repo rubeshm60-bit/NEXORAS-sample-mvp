@@ -2,14 +2,17 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
+
 export default function ProjectExplorer({ filterAnomalies = false }) {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const url = filterAnomalies 
-      ? 'http://localhost:8000/anomalies?limit=50' 
-      : 'http://localhost:8000/projects?limit=50';
+      ? `${API_URL}/anomalies?limit=50` 
+      : `${API_URL}/projects?limit=50`;
       
     axios.get(url)
       .then(res => {
@@ -64,3 +67,4 @@ export default function ProjectExplorer({ filterAnomalies = false }) {
     </div>
   );
 }
+

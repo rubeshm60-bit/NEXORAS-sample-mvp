@@ -2,13 +2,16 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { AlertTriangle } from 'lucide-react';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
+
 export default function Dashboard() {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // We assume backend is running on http://localhost:8000
-    axios.get('http://localhost:8000/dashboard/summary')
+    axios.get(`${API_URL}/dashboard/summary`)
       .then(res => {
         setStats(res.data);
         setLoading(false);
@@ -62,3 +65,4 @@ export default function Dashboard() {
     </div>
   );
 }
+
