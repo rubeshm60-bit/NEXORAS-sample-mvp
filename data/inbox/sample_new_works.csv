@@ -1,0 +1,21 @@
+work_id,mp_name,constituency,work_description,category,status,final_amount
+NEW_W001,Test MP Alpha,Test Constituency,Construction of community hall near village,Infrastructure,Completed,4500000
+NEW_W002,Test MP Beta,Test Constituency 2,Installation of hand pumps,Water Supply,Pending,150000
+NEW_W003,Test MP Gamma,Test Constituency 3,Construction of public toilet,Sanitation,Completed,4990000
+NEW_W004,Test MP Alpha,Test Constituency,Construction of community hall near village,Infrastructure,Completed,4990000
+NEW_W005,Test MP Delta,Test Constituency 4,Solar street lights installation,Energy,Pending,800000
+NEW_W006,Test MP Epsilon,Test Constituency 5,Bus shelter construction,Infrastructure,Completed,300000
+NEW_W007,Test MP Zeta,Test Constituency 6,Construction of boundary wall for school,Education,Pending,1200000
+NEW_W008,Test MP Alpha,Test Constituency,Construction of community hall near village,Infrastructure,Completed,4999999
+NEW_W009,Test MP Theta,Test Constituency 8,Repair of village road,Roads,Completed,2500000
+NEW_W010,Test MP Iota,Test Constituency 9,Library books procurement,Education,Pending,50000
+NEW_W011,Test MP Kappa,Test Constituency 10,Provision of drinking water facility,Water Supply,Completed,400000
+NEW_W012,Test MP Lambda,Test Constituency 11,Construction of drain,Sanitation,Pending,600000
+NEW_W013,Test MP Mu,Test Constituency 12,High mast light installation,Energy,Completed,450000
+NEW_W014,Test MP Nu,Test Constituency 13,Construction of primary health center,Health,Pending,3500000
+NEW_W015,Test MP Xi,Test Constituency 14,Ambulance purchase,Health,Completed,1800000
+NEW_W016,Test MP Omicron,Test Constituency 15,Gym equipment for community center,Sports,Pending,250000
+NEW_W017,Test MP Pi,Test Constituency 16,Construction of waiting hall at railway station,Infrastructure,Completed,1500000
+NEW_W018,Test MP Rho,Test Constituency 17,Park development,Environment,Pending,750000
+NEW_W019,Test MP Sigma,Test Constituency 18,Computer lab for school,Education,Completed,900000
+NEW_W020,Test MP Alpha,Test Constituency,Construction of community hall near village,Infrastructure,Completed,4995000

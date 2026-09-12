@@ -1,25 +1,27 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { AlertTriangle } from 'lucide-react';
+import { AlertTriangle, FileText } from 'lucide-react';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
-
 export default function Dashboard() {
   const [stats, setStats] = useState(null);
+  const [contractSplitting, setContractSplitting] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // We assume backend is running on http://localhost:8000
-    axios.get(`${API_URL}/dashboard/summary`)
-      .then(res => {
-        setStats(res.data);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error(err);
-        setLoading(false);
-      });
+    // Fetch summary and contract splitting alerts concurrently
+    Promise.all([
+      axios.get(`${API_URL}/dashboard/summary`),
+      axios.get(`${API_URL}/nlp/contract-splitting`)
+    ]).then(([summaryRes, nlpRes]) => {
+      setStats(summaryRes.data);
+      setContractSplitting(nlpRes.data.items || []);
+      setLoading(false);
+    }).catch(err => {
+      console.error(err);
+      setLoading(false);
+    });
   }, []);
 
   if (loading) return <div>Loading dashboard...</div>;
@@ -62,7 +64,46 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+      
+      <div className="card" style={{marginTop: '20px'}}>
+        <h3 style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
+          <FileText size={20} /> NLP Contract Splitting Alerts
+        </h3>
+        <p style={{color: 'var(--text-light)', marginBottom: '15px'}}>
+          Identifies potential contract splitting (identical project descriptions repeated multiple times just below the ₹50L threshold).
+        </p>
+        
+        {contractSplitting.length === 0 ? (
+          <div style={{padding: '20px', textAlign: 'center', background: '#f8fafc', borderRadius: '4px'}}>
+            No contract splitting patterns detected.
+          </div>
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>MP Name</th>
+                <th>Constituency</th>
+                <th>Repeated Project Description</th>
+                <th>Repetitions</th>
+                <th>Risk Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              {contractSplitting.map((alert, idx) => (
+                <tr key={idx}>
+                  <td><strong>{alert.mp_name}</strong></td>
+                  <td>{alert.constituency}</td>
+                  <td><span className="badge">{alert.description_text}</span></td>
+                  <td>{alert.repeat_count}x</td>
+                  <td style={{color: alert.nlp_risk_score > 60 ? 'var(--critical)' : 'inherit'}}>
+                    {alert.nlp_risk_score.toFixed(1)} / 100
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 }
-

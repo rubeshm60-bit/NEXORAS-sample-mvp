@@ -18,6 +18,7 @@ class DashboardSummary(BaseModel):
     medium_risk_projects: int
     low_risk_projects: int
     anomaly_count: int
+    nlp_alerts: Optional[int] = 0
 
 class ProjectRiskScoreSchema(BaseModel):
     unified_score: float

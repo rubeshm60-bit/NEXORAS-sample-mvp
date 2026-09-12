@@ -147,3 +147,15 @@ class VendorRiskProfile(Base):
     
     # Relationships
     vendor = relationship("Vendor", back_populates="risk_profile")
+
+class ContractSplittingAlert(Base):
+    """NLP-detected contract splitting patterns at the MP level."""
+    __tablename__ = "contract_splitting_alerts"
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    mp_name = Column(String, nullable=False)
+    constituency = Column(String)
+    description_text = Column(Text)
+    repeat_count = Column(Integer)
+    nlp_risk_score = Column(Float)
+    risk_flags = Column(Text)
