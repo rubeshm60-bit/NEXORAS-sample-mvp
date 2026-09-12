@@ -7,16 +7,19 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 export default function Dashboard() {
   const [stats, setStats] = useState(null);
   const [contractSplitting, setContractSplitting] = useState([]);
+  const [ingestionStatus, setIngestionStatus] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Fetch summary and contract splitting alerts concurrently
     Promise.all([
       axios.get(`${API_URL}/dashboard/summary`),
-      axios.get(`${API_URL}/nlp/contract-splitting`)
-    ]).then(([summaryRes, nlpRes]) => {
+      axios.get(`${API_URL}/nlp/contract-splitting`),
+      axios.get(`${API_URL}/ingestion/status`).catch(() => ({ data: null }))
+    ]).then(([summaryRes, nlpRes, ingestRes]) => {
       setStats(summaryRes.data);
       setContractSplitting(nlpRes.data.items || []);
+      if (ingestRes.data) setIngestionStatus(ingestRes.data);
       setLoading(false);
     }).catch(err => {
       console.error(err);
@@ -64,6 +67,21 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
+      {ingestionStatus && (
+        <div className="card" style={{marginTop: '20px', background: '#f8fafc', border: '1px dashed #cbd5e1'}}>
+          <h3 style={{display: 'flex', alignItems: 'center', gap: '10px', fontSize: '16px'}}>
+            <div style={{width: '10px', height: '10px', borderRadius: '50%', background: ingestionStatus.status === 'active' ? '#22c55e' : '#ef4444'}}></div>
+            Auto-Ingestion Pipeline Status
+          </h3>
+          <div style={{display: 'flex', gap: '40px', marginTop: '10px', fontSize: '14px'}}>
+            <div><strong>Pending Files (Inbox):</strong> {ingestionStatus.inbox_pending}</div>
+            <div><strong>Processed Files:</strong> {ingestionStatus.total_processed}</div>
+            <div><strong>Status:</strong> {ingestionStatus.status.toUpperCase()}</div>
+          </div>
+        </div>
+      )}
+
       
       <div className="card" style={{marginTop: '20px'}}>
         <h3 style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
