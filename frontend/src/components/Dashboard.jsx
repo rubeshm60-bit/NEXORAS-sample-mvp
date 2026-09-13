@@ -75,16 +75,28 @@ export default function Dashboard() {
               <div style={{width: '10px', height: '10px', borderRadius: '50%', background: ingestionStatus.status === 'active' ? '#22c55e' : '#ef4444'}}></div>
               Auto-Ingestion Pipeline Status
             </h3>
-            <button 
-              className="btn" 
-              onClick={() => {
-                axios.post(`${API_URL}/ingestion/run`).then(() => window.location.reload());
-              }}
-              style={{padding: '5px 15px', fontSize: '12px'}}
-              disabled={ingestionStatus.inbox_pending === 0}
-            >
-              Simulate Upload (Trigger Cloud Ingestion)
-            </button>
+            <div style={{display: 'flex', gap: '10px'}}>
+              <button 
+                className="btn" 
+                onClick={() => {
+                  axios.post(`${API_URL}/ingestion/reset`).then(() => window.location.reload());
+                }}
+                style={{padding: '5px 15px', fontSize: '12px', background: '#e2e8f0', color: '#475569', border: 'none'}}
+                disabled={ingestionStatus.total_processed === 0}
+              >
+                Reset Demo
+              </button>
+              <button 
+                className="btn" 
+                onClick={() => {
+                  axios.post(`${API_URL}/ingestion/run`).then(() => window.location.reload());
+                }}
+                style={{padding: '5px 15px', fontSize: '12px'}}
+                disabled={ingestionStatus.inbox_pending === 0}
+              >
+                Simulate Upload (Trigger Cloud Ingestion)
+              </button>
+            </div>
           </div>
           <div style={{display: 'flex', gap: '40px', marginTop: '15px', fontSize: '14px'}}>
             <div><strong>Pending Files (Inbox):</strong> {ingestionStatus.inbox_pending}</div>
