@@ -37,18 +37,18 @@ export default function Dashboard() {
       <div className="grid-3">
         <div className="stat-box">
           <div>Total Projects Monitored</div>
-          <div className="stat-value">{stats.total_projects.toLocaleString(en-IN)}</div>
+          <div className="stat-value">{stats.total_projects.toLocaleString('en-IN')}</div>
         </div>
         <div className="stat-box">
           <div>Total Value (Lakh)</div>
-          <div className="stat-value">₹{stats.total_value.toLocaleString(en-IN)}</div>
+          <div className="stat-value">₹{stats.total_value.toLocaleString('en-IN')}</div>
         </div>
         <div className="stat-box" style={{border: '1px solid var(--critical)'}}>
           <div style={{color: 'var(--critical)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px'}}>
             <AlertTriangle size={18} /> High Risk Anomalies
           </div>
           <div className="stat-value" style={{color: 'var(--critical)'}}>
-            {stats.high_risk_projects.toLocaleString(en-IN)}
+            {stats.high_risk_projects.toLocaleString('en-IN')}
           </div>
         </div>
       </div>
