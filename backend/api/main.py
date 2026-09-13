@@ -263,3 +263,29 @@ def get_ingestion_status():
         "inbox_files": inbox_files,
         "processed_files": processed_files[-10:]
     }
+
+@app.post("/ingestion/run")
+def trigger_ingestion():
+    """Manually triggers the ingestion pipeline on the cloud server."""
+    import shutil
+    from backend.ingestion.auto_ingest import process_csv
+    
+    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+    inbox = os.path.join(base_dir, 'data', 'inbox')
+    processed = os.path.join(base_dir, 'data', 'processed')
+    
+    os.makedirs(processed, exist_ok=True)
+    processed_count = 0
+    
+    if os.path.exists(inbox):
+        for fname in os.listdir(inbox):
+            if fname.endswith('.csv'):
+                filepath = os.path.join(inbox, fname)
+                try:
+                    process_csv(filepath)
+                    shutil.move(filepath, os.path.join(processed, fname))
+                    processed_count += 1
+                except Exception as e:
+                    print(f"Failed to process {fname}: {e}")
+                    
+    return {"message": f"Successfully processed {processed_count} files in the cloud"}
