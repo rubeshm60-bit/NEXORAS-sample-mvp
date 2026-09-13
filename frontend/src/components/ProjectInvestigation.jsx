@@ -11,7 +11,7 @@ export default function ProjectInvestigation() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/projects/${id}`)
+    axios.get(`${API_URL}/projects/${id}`)
       .then(res => {
         setProject(res.data);
         setLoading(false);
