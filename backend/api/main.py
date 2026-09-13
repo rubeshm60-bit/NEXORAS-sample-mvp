@@ -286,6 +286,7 @@ def trigger_ingestion():
                     shutil.move(filepath, os.path.join(processed, fname))
                     processed_count += 1
                 except Exception as e:
-                    print(f"Failed to process {fname}: {e}")
+                    import traceback
+                    return {"error": str(e), "traceback": traceback.format_exc()}
                     
     return {"message": f"Successfully processed {processed_count} files in the cloud"}
