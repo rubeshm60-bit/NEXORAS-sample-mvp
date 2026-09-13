@@ -79,6 +79,10 @@ class Project(Base):
     payments = relationship("Payment", back_populates="project")
     risk_score = relationship("ProjectRiskScore", back_populates="project", uselist=False)
 
+    @property
+    def mp_name(self):
+        return self.mp.mp_name if self.mp else "Unknown"
+
 class Payment(Base):
     """Disbursement / Expenditure transaction."""
     __tablename__ = "payments"

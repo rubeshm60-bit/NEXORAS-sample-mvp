@@ -218,7 +218,7 @@ export default function NetworkVisualization() {
                                     <IndianRupee size={14} /> Total Payout
                                 </div>
                                 <div style={{ fontSize: '18px', fontWeight: 'bold' }}>
-                                    ₹{(selectedNode.payout || 0).toLocaleString()}
+                                    ₹{(selectedNode.payout || 0).toLocaleString(en-IN)}
                                 </div>
                             </div>
                         </div>

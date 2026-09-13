@@ -41,7 +41,7 @@ export default function VendorIntelligence() {
           {vendors.map(v => (
             <tr key={v.id}>
               <td>{v.name}</td>
-              <td>₹{v.total_payout.toLocaleString()}</td>
+              <td>₹{v.total_payout.toLocaleString(en-IN)}</td>
               <td>{v.transaction_count}</td>
               <td>{v.mp_count}</td>
               <td>

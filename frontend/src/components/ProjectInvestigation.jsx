@@ -37,7 +37,7 @@ export default function ProjectInvestigation() {
         <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start'}}>
           <div>
             <h2>{project.work_name}</h2>
-            <div style={{color: 'var(--text-light)', marginBottom: '20px'}}>ID: {project.id} | MP: {project.mp_id}</div>
+            <div style={{color: 'var(--text-light)', marginBottom: '20px'}}>ID: {project.id} | MP: {project.mp_name}</div>
           </div>
           {rs && (
             <div style={{textAlign: 'right'}}>
@@ -59,12 +59,27 @@ export default function ProjectInvestigation() {
           {rs && (
             <div style={{background: '#f8fafc', padding: '15px', borderRadius: '4px', gridColumn: 'span 2'}}>
               <strong>Risk Score Breakdown</strong>
-              <div style={{display: 'flex', justifyContent: 'space-between', marginTop: '10px'}}>
-                <div>Tabular (25%): <strong>{rs.tabular_pts.toFixed(1)} pts</strong></div>
-                <div>Network (25%): <strong>{rs.network_pts.toFixed(1)} pts</strong></div>
-                <div>Graph (20%): <strong>{rs.graph_pts.toFixed(1)} pts</strong></div>
-                <div>Finance (15%): <strong>{rs.financial_pts.toFixed(1)} pts</strong></div>
-                <div>NLP (15%): <strong>{rs.nlp_pts.toFixed(1)} pts</strong></div>
+              <div style={{display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '10px'}}>
+                <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                  <span>Tabular Anomaly (Max 25):</span>
+                  <span><strong>{rs.tabular_pts.toFixed(1)} pts</strong> <span style={{color: '#64748b', fontSize: '0.9em'}}>({rs.unified_score > 0 ? ((rs.tabular_pts / rs.unified_score) * 100).toFixed(0) : 0}% of risk)</span></span>
+                </div>
+                <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                  <span>Vendor Network (Max 25):</span>
+                  <span><strong>{rs.network_pts.toFixed(1)} pts</strong> <span style={{color: '#64748b', fontSize: '0.9em'}}>({rs.unified_score > 0 ? ((rs.network_pts / rs.unified_score) * 100).toFixed(0) : 0}% of risk)</span></span>
+                </div>
+                <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                  <span>Graph Centrality (Max 20):</span>
+                  <span><strong>{rs.graph_pts.toFixed(1)} pts</strong> <span style={{color: '#64748b', fontSize: '0.9em'}}>({rs.unified_score > 0 ? ((rs.graph_pts / rs.unified_score) * 100).toFixed(0) : 0}% of risk)</span></span>
+                </div>
+                <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                  <span>Financial/Compliance (Max 15):</span>
+                  <span><strong>{rs.financial_pts.toFixed(1)} pts</strong> <span style={{color: '#64748b', fontSize: '0.9em'}}>({rs.unified_score > 0 ? ((rs.financial_pts / rs.unified_score) * 100).toFixed(0) : 0}% of risk)</span></span>
+                </div>
+                <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                  <span>NLP Splitting (Max 15):</span>
+                  <span><strong>{rs.nlp_pts.toFixed(1)} pts</strong> <span style={{color: '#64748b', fontSize: '0.9em'}}>({rs.unified_score > 0 ? ((rs.nlp_pts / rs.unified_score) * 100).toFixed(0) : 0}% of risk)</span></span>
+                </div>
               </div>
             </div>
           )}

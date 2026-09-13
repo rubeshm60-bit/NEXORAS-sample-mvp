@@ -44,6 +44,7 @@ class ProjectBase(BaseModel):
     final_amount: float
 
 class ProjectResponse(ProjectBase):
+    mp_name: Optional[str] = None
     risk_score: Optional[ProjectRiskScoreSchema]
     
     model_config = ConfigDict(from_attributes=True)

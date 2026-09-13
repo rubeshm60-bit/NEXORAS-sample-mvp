@@ -373,12 +373,12 @@ def run():
     
     print("\n[9/9] PIPELINE COMPLETE!")
     print("Database `nexoras_mvp.db` successfully populated with REAL ML intelligence data.")
-    print("  - NLP Contract Splitting: ✅ Real TF-IDF analysis")
-    print("  - Vendor Network Risk:    ✅ Real monopoly/syndicate detection")
-    print("  - Graph Centrality:       ✅ Real PageRank from NetworkX")
-    print("  - Vendor Risk Profiles:   ✅ Seeded to DB")
-    print("  - Payments:               ✅ Seeded to DB")
-    print("  - NLP Alerts:             ✅ Seeded to DB")
+    print("  - NLP Contract Splitting: [OK] Real TF-IDF analysis")
+    print("  - Vendor Network Risk:    [OK] Real monopoly/syndicate detection")
+    print("  - Graph Centrality:       [OK] Real PageRank from NetworkX")
+    print("  - Vendor Risk Profiles:   [OK] Seeded to DB")
+    print("  - Payments:               [OK] Seeded to DB")
+    print("  - NLP Alerts:             [OK] Seeded to DB")
     print("You can now start the FastAPI server (`uvicorn backend.api.main:app --reload`).")
 
 if __name__ == "__main__":

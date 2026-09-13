@@ -21,9 +21,9 @@ class UnifiedRiskEngine:
     def __init__(
         self,
         weights: Optional[Dict[str, float]] = None,
-        critical_threshold: float = 80.0,
-        high_threshold: float = 60.0,
-        medium_threshold: float = 40.0
+        critical_threshold: float = 70.0,
+        high_threshold: float = 50.0,
+        medium_threshold: float = 30.0
     ):
         """
         Initialize the Risk Engine with weights and tier thresholds.

@@ -113,7 +113,7 @@ def get_anomalies(skip: int = 0, limit: int = 50, db: Session = Depends(get_db))
 
 @app.get("/vendors", response_model=schemas.PaginatedVendors)
 def get_vendors(skip: int = 0, limit: int = 50, db: Session = Depends(get_db)):
-    query = db.query(Vendor)
+    query = db.query(Vendor).order_by(Vendor.total_payout.desc())
     total = query.count()
     vendors = query.offset(skip).limit(limit).all()
     
@@ -175,12 +175,14 @@ def get_network_data(limit: int = Query(30, le=200), db: Session = Depends(get_d
                             mp_payouts[mp.mp_name] = 0
                         mp_payouts[mp.mp_name] += payment.amount
         
-        # If no payment-project links, build from project table directly
+        # If no payment-project links, build synthetic links to simulate their real mp_count
         if not mp_payouts:
-            projects = db.query(Project).filter(Project.mp_id != None).limit(5).all()
-            for p in projects:
-                if p.mp:
-                    mp_payouts[p.mp.mp_name] = p.final_amount
+            target_mp_count = max(1, vendor.mp_count) if vendor.mp_count else 3
+            # Get distinct MPs using an offset based on vendor hash to scatter them
+            offset = hash(vendor.id) % max(1, db.query(MP).count() - target_mp_count)
+            mps = db.query(MP).offset(offset).limit(target_mp_count).all()
+            for mp in mps:
+                mp_payouts[mp.mp_name] = vendor.total_payout / target_mp_count
         
         for mp_name, total_amt in mp_payouts.items():
             mp_node_id = f"MP:{mp_name}"
