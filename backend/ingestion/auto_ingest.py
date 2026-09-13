@@ -107,6 +107,7 @@ def process_csv(filepath: str):
     # Insert into Database
     db = SessionLocal()
     inserted = 0
+    added_mps = set()
     try:
         for i, row in df.iterrows():
             p_id = str(row['work_id'])
@@ -117,19 +118,21 @@ def process_csv(filepath: str):
             mp_id = "MP_" + hashlib.md5((mp_name + mp_const).encode()).hexdigest()[:8]
             
             # Ensure MP exists
-            if not db.query(MP).filter_by(id=mp_id).first():
-                mp = MP(
-                    id=mp_id,
-                    mp_name=mp_name,
-                    state='',
-                    constituency=mp_const,
-                    party='',
-                    allocated_amount=0,
-                    expenditure_amount=0,
-                    utilization_rate=0,
-                    completion_rate=0
-                )
-                db.add(mp)
+            if mp_id not in added_mps:
+                added_mps.add(mp_id)
+                if not db.query(MP).filter_by(id=mp_id).first():
+                    mp = MP(
+                        id=mp_id,
+                        mp_name=mp_name,
+                        state='',
+                        constituency=mp_const,
+                        party='',
+                        allocated_amount=0,
+                        expenditure_amount=0,
+                        utilization_rate=0,
+                        completion_rate=0
+                    )
+                    db.add(mp)
             
             # Insert Project
             if not db.query(Project).filter_by(id=p_id).first():
