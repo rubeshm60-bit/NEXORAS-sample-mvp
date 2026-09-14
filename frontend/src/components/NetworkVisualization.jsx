@@ -11,6 +11,7 @@ export default function NetworkVisualization() {
   const [elements, setElements] = useState([]);
   const [loadingGraph, setLoadingGraph] = useState(false);
   const [vendorProjects, setVendorProjects] = useState([]);
+  const [selectedMp, setSelectedMp] = useState(null);
   const cyRef = useRef(null);
 
   useEffect(() => {
@@ -24,6 +25,7 @@ export default function NetworkVisualization() {
 
   const handleVendorSelect = (vendor) => {
     setSelectedVendorId(vendor.id);
+    setSelectedMp(null);
     setLoadingGraph(true);
     
     // Fetch network graph for this specific vendor
@@ -58,6 +60,15 @@ export default function NetworkVisualization() {
         setVendorProjects(res.data);
       })
       .catch(console.error);
+  };
+
+  const handleNodeClick = (evt) => {
+    const nodeData = evt.target.data();
+    if (nodeData.type === 'mp') {
+      setSelectedMp(nodeData.label);
+    } else {
+      setSelectedMp(null);
+    }
   };
 
   const style = [
@@ -175,6 +186,12 @@ export default function NetworkVisualization() {
                 }} 
                 cy={(cy) => {
                     cyRef.current = cy;
+                    // Prevent multiple listeners if re-rendered
+                    cy.off('tap');
+                    cy.on('tap', 'node', handleNodeClick);
+                    cy.on('tap', (e) => {
+                        if (e.target === cy) setSelectedMp(null);
+                    });
                 }}
               />
           )}
@@ -194,12 +211,17 @@ export default function NetworkVisualization() {
             </div>
         ) : (
             <div style={{ flex: 1, overflowY: 'auto' }}>
-                {vendorProjects.length === 0 ? (
+                {selectedMp && (
+                    <div style={{ padding: '8px', background: '#eff6ff', color: '#1e40af', fontSize: '12px', fontWeight: 'bold', borderRadius: '4px', marginBottom: '10px' }}>
+                        Filtered by MP: {selectedMp}
+                    </div>
+                )}
+                {vendorProjects.filter(p => !selectedMp || p.mp_name === selectedMp).length === 0 ? (
                     <div style={{ color: 'var(--text-light)', fontSize: '14px', textAlign: 'center', marginTop: '20px' }}>
-                        No projects found for this vendor.
+                        No projects found for this selection.
                     </div>
                 ) : (
-                    vendorProjects.map(p => (
+                    vendorProjects.filter(p => !selectedMp || p.mp_name === selectedMp).map(p => (
                         <div key={p.id} style={{ padding: '12px', borderBottom: '1px solid #e2e8f0', fontSize: '14px' }}>
                             <div style={{ fontWeight: 'bold', marginBottom: '5px' }}>{p.work_name}</div>
                             <div style={{ color: 'var(--text-light)' }}>ID: {p.id}</div>

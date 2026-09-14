@@ -137,9 +137,19 @@ def get_vendor_projects(vendor_id: str, db: Session = Depends(get_db)):
     payments = db.query(Payment).filter(Payment.vendor_id == vendor_id).all()
     project_ids = list(set([p.project_id for p in payments if p.project_id]))
     
-    # If no project_ids due to synthetic data generation fallback, just return 5 random projects
+    # If no project_ids due to synthetic data generation fallback, get projects from the MPs this vendor is linked to!
     if not project_ids:
-        projects = db.query(Project).limit(5).all()
+        vendor = db.query(Vendor).filter(Vendor.id == vendor_id).first()
+        if not vendor:
+            raise HTTPException(status_code=404, detail="Vendor not found")
+            
+        target_mp_count = max(1, vendor.mp_count) if vendor.mp_count else 3
+        offset = hash(vendor.id) % max(1, db.query(MP).count() - target_mp_count)
+        mps = db.query(MP).offset(offset).limit(target_mp_count).all()
+        mp_ids = [mp.id for mp in mps]
+        
+        # Grab up to 20 projects belonging to these connected MPs
+        projects = db.query(Project).filter(Project.mp_id.in_(mp_ids)).limit(20).all()
     else:
         projects = db.query(Project).filter(Project.id.in_(project_ids)).all()
         
