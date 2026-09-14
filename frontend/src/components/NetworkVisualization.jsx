@@ -63,9 +63,17 @@ export default function NetworkVisualization() {
   };
 
   const handleNodeClick = (evt) => {
-    const nodeData = evt.target.data();
-    if (nodeData.type === 'mp') {
-      setSelectedMp(nodeData.full_name || nodeData.label);
+    const data = evt.target.data();
+    if (data.type === 'mp') {
+      setSelectedMp(data.full_name || data.label);
+    } else if (data.source && data.target) {
+      // It's an edge connecting Vendor to MP (or vice versa)
+      const mpIdStr = data.source.startsWith("MP:") ? data.source : (data.target.startsWith("MP:") ? data.target : null);
+      if (mpIdStr) {
+        setSelectedMp(mpIdStr.replace("MP:", ""));
+      } else {
+        setSelectedMp(null);
+      }
     } else {
       setSelectedMp(null);
     }
@@ -188,7 +196,7 @@ export default function NetworkVisualization() {
                     cyRef.current = cy;
                     // Prevent multiple listeners if re-rendered
                     cy.off('tap');
-                    cy.on('tap', 'node', handleNodeClick);
+                    cy.on('tap', 'node, edge', handleNodeClick);
                     cy.on('tap', (e) => {
                         if (e.target === cy) setSelectedMp(null);
                     });
