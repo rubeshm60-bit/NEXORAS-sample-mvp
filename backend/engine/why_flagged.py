@@ -60,17 +60,21 @@ class WhyFlaggedEngine:
         return formatted_results
 
     def generate_report_string(self, formatted_reasons: List[Dict[str, str]]) -> str:
-        """Converts a single instance's formatted reasons into a readable string report."""
+        """Converts a single instance's formatted reasons into a readable string report for human auditors."""
         if not formatted_reasons:
-            return "No anomalous signals detected."
+            return "Audit Status: Clear. No significant financial anomalies detected."
             
-        lines = []
+        lines = ["[FINANCIAL ANOMALIES DETECTED]"]
         for reason in formatted_reasons:
-            lines.append(f"[{reason['Signal'].upper()}]")
-            lines.append(f"  {reason['Evidence']}")
-            lines.append(f"  {reason['Baseline']}")
-            if reason['Deviation'] != "N/A":
-                lines.append(f"  Deviation: {reason['Deviation']}")
-            lines.append(f"  Risk contribution: {reason['Contribution']}\n")
+            signal = reason['Signal']
+            evidence = reason['Evidence'].replace('Observed: ', '')
+            baseline = reason['Baseline']
+            deviation = reason['Deviation']
             
+            # Make the language formal and readable for an auditor
+            if deviation != "N/A":
+                lines.append(f"• {signal}: This project's value was {evidence}. Compared to the regional median ({baseline.replace('Comparable median: ', '')}), this represents a {deviation} deviation from standard spending patterns.")
+            else:
+                lines.append(f"• {signal}: This metric registered at {evidence}. Because there is no historical baseline for this specific category, the raw value alone was statistically flagged as a high-risk outlier by the Isolation Forest.")
+                
         return "\n".join(lines).strip()

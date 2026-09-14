@@ -178,10 +178,31 @@ def run():
     # ML SCORING (Isolation Forest + SHAP)
     # ──────────────────────────────────────────────────────
     print("\n[5/9] BUILDING ML FEATURES...")
-    np.random.seed(42)
+    # Merge recommended works data into cw_df to get sanctioned amounts and dates
+    if not rw_df.empty and 'work_id' in rw_df.columns:
+        rw_subset = rw_df[['work_id', 'recommended_amount', 'recommendation_date']].copy()
+        rw_subset['work_id'] = rw_subset['work_id'].astype(str)
+        cw_df['work_id'] = cw_df['work_id'].astype(str)
+        cw_df = cw_df.merge(rw_subset, on='work_id', how='left')
+    
     works_features = cw_df[['work_id', 'final_amount']].copy()
-    works_features['cost_deviation'] = np.random.randn(len(cw_df))
-    works_features['delay_days'] = np.random.randint(0, 100, len(cw_df))
+    
+    # 1. Real cost_deviation
+    sanctioned = cw_df.get('recommended_amount', cw_df.get('sanctioned_amount', 1.0)).fillna(1.0).replace(0, 1.0)
+    final_amt = cw_df.get('final_amount', 0.0).fillna(0.0)
+    works_features['cost_deviation'] = ((final_amt - sanctioned) / sanctioned).fillna(0.0)
+    
+    # 2. Real delay_days (difference between completed_date and recommendation_date)
+    if 'completed_date' in cw_df.columns and 'recommendation_date' in cw_df.columns:
+        try:
+            c_date = pd.to_datetime(cw_df['completed_date'], errors='coerce')
+            r_date = pd.to_datetime(cw_df['recommendation_date'], errors='coerce')
+            works_features['delay_days'] = (c_date - r_date).dt.days.fillna(0).astype(int)
+            works_features['delay_days'] = np.maximum(works_features['delay_days'], 0) # No negative days
+        except Exception:
+            works_features['delay_days'] = 0
+    else:
+        works_features['delay_days'] = 0
     
     print("\n[6/9] RUNNING ISOLATION FOREST ENSEMBLE...")
     if len(works_features) > 2:
@@ -205,12 +226,15 @@ def run():
     risk_engine = UnifiedRiskEngine()
     
     # NOW USING REAL SCORES instead of random!
+    # 3. Real financial_compliance_score based on normalized cost deviation (capped at 1.0)
+    norm_cost_dev = np.clip(works_features['cost_deviation'] / 2.0, 0.0, 1.0)
+    
     risk_df = pd.DataFrame({
         'work_id': cw_df['work_id'],
         'tabular_anomaly_score': works_features['iforest_score'],
         'vendor_risk_score': cw_df['vendor_risk_score'],          # REAL from VendorNetworkIntelligence
         'network_centrality_score': cw_df['centrality_score'],    # REAL from NetworkX PageRank
-        'financial_compliance_score': np.random.rand(len(cw_df)), # Still simulated (needs actual financial data)
+        'financial_compliance_score': norm_cost_dev,              # REAL based on cost deviation
         'nlp_splitting_score': cw_df['nlp_risk_score']            # REAL from NLP TF-IDF engine
     })
     

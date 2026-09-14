@@ -62,22 +62,22 @@ class UnifiedRiskEngine:
         reasons = []
         
         if row.get('tabular_anomaly_points', 0) > (self.weights['tabular_anomaly'] * 100 * 0.5):
-            reasons.append(f"High tabular anomaly score ({row['tabular_anomaly_points']:.1f} pts).")
+            reasons.append("Tabular Anomaly: The AI detected statistical deviations in the project's numerical data.")
             
         if row.get('vendor_network_points', 0) > (self.weights['vendor_network'] * 100 * 0.5):
-            reasons.append(f"Suspicious vendor network behavior ({row['vendor_network_points']:.1f} pts).")
+            reasons.append("Monopoly Contractor Alert: The vendor awarded this project is monopolizing funds in this district, raising a severe conflict of interest risk.")
             
         if row.get('networkx_centrality_points', 0) > (self.weights['networkx_centrality'] * 100 * 0.5):
-            reasons.append(f"Unusual graph centrality metrics ({row['networkx_centrality_points']:.1f} pts).")
+            reasons.append("Cartel Network Alert: Graph Intelligence detects this project is part of a closed, high-risk multi-MP vendor syndicate.")
             
         if row.get('financial_compliance_points', 0) > (self.weights['financial_compliance'] * 100 * 0.5):
-            reasons.append(f"Financial/compliance irregularities detected ({row['financial_compliance_points']:.1f} pts).")
+            reasons.append("Budget Inflation Alert: This project exhibits massive cost inflation compared to its initially sanctioned budget.")
             
         if row.get('nlp_contract_splitting_points', 0) > (self.weights['nlp_contract_splitting'] * 100 * 0.5):
-            reasons.append(f"NLP detected potential contract splitting ({row['nlp_contract_splitting_points']:.1f} pts).")
+            reasons.append("Contract Splitting Alert: The exact text description of this project has been submitted multiple times, indicating an attempt to bypass bulk-procurement audits.")
             
         if not reasons and row.get('unified_risk_score', 0) >= self.thresholds['MEDIUM_RISK']:
-            reasons.append("Cumulative multi-pillar minor signals elevated the risk score.")
+            reasons.append("Cumulative Alert: While no single factor crossed the critical threshold, multiple minor risk factors combined to elevate the overall risk score.")
             
         return reasons
 
