@@ -65,7 +65,7 @@ export default function NetworkVisualization() {
   const handleNodeClick = (evt) => {
     const nodeData = evt.target.data();
     if (nodeData.type === 'mp') {
-      setSelectedMp(nodeData.label);
+      setSelectedMp(nodeData.full_name || nodeData.label);
     } else {
       setSelectedMp(null);
     }

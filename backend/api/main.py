@@ -218,6 +218,7 @@ def get_network_data(limit: int = Query(30, le=200), vendor_id: str = Query(None
                     "data": {
                         "id": mp_node_id,
                         "label": mp_name[:25],
+                        "full_name": mp_name,
                         "type": "mp"
                     }
                 })
