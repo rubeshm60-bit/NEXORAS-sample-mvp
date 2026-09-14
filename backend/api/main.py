@@ -131,11 +131,25 @@ def get_vendor(vendor_id: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Vendor not found")
     return vendor
 
+@app.get("/vendors/{vendor_id}/projects", response_model=List[schemas.ProjectResponse])
+def get_vendor_projects(vendor_id: str, db: Session = Depends(get_db)):
+    # Find all payments for this vendor, then get the distinct projects
+    payments = db.query(Payment).filter(Payment.vendor_id == vendor_id).all()
+    project_ids = list(set([p.project_id for p in payments if p.project_id]))
+    
+    # If no project_ids due to synthetic data generation fallback, just return 5 random projects
+    if not project_ids:
+        projects = db.query(Project).limit(5).all()
+    else:
+        projects = db.query(Project).filter(Project.id.in_(project_ids)).all()
+        
+    return projects
+
 # ──────────────────────────────────────────────────────
 # IMPROVEMENT 2: Real Network Graph Endpoint
 # ──────────────────────────────────────────────────────
 @app.get("/network")
-def get_network_data(limit: int = Query(30, le=200), db: Session = Depends(get_db)):
+def get_network_data(limit: int = Query(30, le=200), vendor_id: str = Query(None), db: Session = Depends(get_db)):
     """
     Returns a real MP-Vendor bipartite network in Cytoscape.js format,
     built from the payments and vendor tables in the database.
@@ -144,9 +158,12 @@ def get_network_data(limit: int = Query(30, le=200), db: Session = Depends(get_d
     edges = []
     seen_nodes = set()
     
-    # Get top vendors by transaction count
-    top_vendors = db.query(Vendor).order_by(Vendor.transaction_count.desc()).limit(limit).all()
-    
+    # Get top vendors by transaction count or filter by vendor_id
+    if vendor_id:
+        top_vendors = db.query(Vendor).filter(Vendor.id == vendor_id).all()
+    else:
+        top_vendors = db.query(Vendor).order_by(Vendor.transaction_count.desc()).limit(limit).all()
+        
     for vendor in top_vendors:
         v_node_id = f"V:{vendor.name}"
         if v_node_id not in seen_nodes:

@@ -322,9 +322,17 @@ def run():
             db.add(project)
         
         score_data = scored_projects.iloc[i]
-        report_str = "No major anomalies."
+        reasons_list = []
+        
+        # Add SHAP explanations if any
         if formatted_reasons and len(formatted_reasons) > i and len(formatted_reasons[i]) > 0:
-            report_str = WhyFlaggedEngine().generate_report_string(formatted_reasons[i])
+            reasons_list.append(WhyFlaggedEngine().generate_report_string(formatted_reasons[i]))
+            
+        # Add UnifiedRiskEngine multi-pillar explanations
+        if isinstance(score_data.get('why_flagged'), list) and len(score_data['why_flagged']) > 0:
+            reasons_list.append("[MULTI-PILLAR RISK FACTORS]\n  - " + "\n  - ".join(score_data['why_flagged']))
+            
+        report_str = "\n\n".join(reasons_list) if reasons_list else "No major anomalies."
         
         risk = ProjectRiskScore(
             project_id=p_id,

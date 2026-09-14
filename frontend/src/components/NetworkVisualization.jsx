@@ -1,25 +1,38 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import CytoscapeComponent from 'react-cytoscapejs';
-import { Network, Search, Filter, IndianRupee, Users } from 'lucide-react';
+import { Network, Search, Users, IndianRupee } from 'lucide-react';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 export default function NetworkVisualization() {
+  const [vendors, setVendors] = useState([]);
+  const [selectedVendorId, setSelectedVendorId] = useState(null);
   const [elements, setElements] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedNode, setSelectedNode] = useState(null);
+  const [loadingGraph, setLoadingGraph] = useState(false);
+  const [vendorProjects, setVendorProjects] = useState([]);
   const cyRef = useRef(null);
 
   useEffect(() => {
-    axios.get(`${API_URL}/network`)
+    // Load vendors list
+    axios.get(`${API_URL}/vendors?limit=100`)
+      .then(res => {
+        setVendors(res.data.items);
+      })
+      .catch(console.error);
+  }, []);
+
+  const handleVendorSelect = (vendor) => {
+    setSelectedVendorId(vendor.id);
+    setLoadingGraph(true);
+    
+    // Fetch network graph for this specific vendor
+    axios.get(`${API_URL}/network?vendor_id=${vendor.id}`)
       .then(res => {
         const { nodes, edges } = res.data;
         
-        // Add dynamic scaling classes or data attributes
         const formattedNodes = nodes.map(n => {
           if (n.data.type === 'vendor') {
-            // scale vendor size between 30 and 80 based on payout
             const size = Math.min(80, Math.max(30, (n.data.payout || 0) / 1000000));
             return { ...n, data: { ...n.data, size } };
           }
@@ -27,44 +40,25 @@ export default function NetworkVisualization() {
         });
 
         const formattedEdges = edges.map(e => {
-            // scale edge width based on weight (transaction amount)
             const width = Math.min(8, Math.max(1, (e.data.weight || 0) / 2000000));
             return { ...e, data: { ...e.data, width } };
         });
 
         setElements([...formattedNodes, ...formattedEdges]);
-        setLoading(false);
+        setLoadingGraph(false);
       })
       .catch(err => {
         console.error(err);
-        setLoading(false);
+        setLoadingGraph(false);
       });
-  }, []);
 
-  const handleNodeClick = (evt) => {
-    const node = evt.target;
-    setSelectedNode(node.data());
-    
-    // Highlight connected edges and nodes
-    if (cyRef.current) {
-        const cy = cyRef.current;
-        cy.elements().removeClass('highlighted faded');
-        
-        const neighborhood = node.neighborhood();
-        cy.elements().difference(neighborhood).not(node).addClass('faded');
-        neighborhood.addClass('highlighted');
-        node.addClass('highlighted');
-    }
+    // Fetch projects for this vendor
+    axios.get(`${API_URL}/vendors/${vendor.id}/projects`)
+      .then(res => {
+        setVendorProjects(res.data);
+      })
+      .catch(console.error);
   };
-
-  const resetHighlight = () => {
-    if (cyRef.current) {
-        cyRef.current.elements().removeClass('highlighted faded');
-    }
-    setSelectedNode(null);
-  };
-
-  if (loading) return <div>Loading complex network graph... This may take a few seconds.</div>;
 
   const style = [
     {
@@ -109,145 +103,110 @@ export default function NetworkVisualization() {
         'curve-style': 'bezier',
         'opacity': 0.6
       }
-    },
-    {
-      selector: '.faded',
-      style: {
-        'opacity': 0.1
-      }
-    },
-    {
-      selector: 'node.highlighted',
-      style: {
-        'border-color': '#fbbf24',
-        'border-width': 4
-      }
-    },
-    {
-      selector: 'edge.highlighted',
-      style: {
-        'line-color': '#fbbf24',
-        'opacity': 1,
-        'z-index': 10
-      }
     }
   ];
 
   return (
     <div style={{ display: 'flex', gap: '20px', height: '85vh' }}>
       
-      {/* GRAPH CONTAINER */}
-      <div className="card" style={{ flex: 1, display: 'flex', flexDirection: 'column', position: 'relative' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-            <h2 style={{ display: 'flex', alignItems: 'center', gap: '10px', margin: 0 }}>
-                <Network size={24} /> Vendor-MP Syndicate Intelligence
-            </h2>
-            <button className="btn" onClick={resetHighlight} style={{ padding: '5px 10px', fontSize: '12px' }}>
-                Reset View
-            </button>
-        </div>
-        <p style={{color: 'var(--text-light)', fontSize: '14px', marginBottom: '15px'}}>
-          Hexagons = MPs (Red) | Circles = Vendors (Blue). Larger vendors have received more funds. 
-          Click any node to investigate relationships.
-        </p>
-        
-        <div style={{ flex: 1, border: '1px solid #e2e8f0', borderRadius: '8px', background: '#f8fafc', overflow: 'hidden' }}>
-          <CytoscapeComponent 
-            elements={elements} 
-            style={{ width: '100%', height: '100%' }} 
-            stylesheet={style}
-            layout={{ 
-                name: 'cose',
-                idealEdgeLength: 100,
-                nodeOverlap: 20,
-                refresh: 20,
-                fit: true,
-                padding: 30,
-                randomize: false,
-                componentSpacing: 100,
-                nodeRepulsion: 400000,
-                edgeElasticity: 100,
-                nestingFactor: 5
-            }} 
-            cy={(cy) => {
-                cyRef.current = cy;
-                cy.on('tap', 'node', handleNodeClick);
-                cy.on('tap', (e) => {
-                    if (e.target === cy) resetHighlight();
-                });
-            }}
-          />
+      {/* VENDOR LIST (LEFT SIDEBAR) */}
+      <div className="card" style={{ width: '300px', display: 'flex', flexDirection: 'column' }}>
+        <h3 style={{ borderBottom: '1px solid #e2e8f0', paddingBottom: '10px', margin: '0 0 10px 0' }}>
+            Vendors List
+        </h3>
+        <p style={{fontSize: '12px', color: 'var(--text-light)', marginBottom: '15px'}}>Click a vendor to view their network graph.</p>
+        <div style={{ flex: 1, overflowY: 'auto' }}>
+            {vendors.map(v => (
+                <div 
+                    key={v.id} 
+                    onClick={() => handleVendorSelect(v)}
+                    style={{ 
+                        padding: '10px', 
+                        borderBottom: '1px solid #e2e8f0',
+                        cursor: 'pointer',
+                        background: selectedVendorId === v.id ? '#eff6ff' : 'white',
+                        borderLeft: selectedVendorId === v.id ? '4px solid #3b82f6' : '4px solid transparent'
+                    }}
+                >
+                    <div style={{fontWeight: 'bold', fontSize: '14px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
+                        {v.name}
+                    </div>
+                    <div style={{fontSize: '12px', color: 'var(--text-light)'}}>
+                        ₹{v.total_payout.toLocaleString('en-IN')} | {v.mp_count} MPs
+                    </div>
+                </div>
+            ))}
         </div>
       </div>
 
-      {/* INTELLIGENCE PANEL */}
-      <div className="card" style={{ width: '350px', overflowY: 'auto' }}>
-        <h3 style={{ borderBottom: '1px solid #e2e8f0', paddingBottom: '10px', marginBottom: '20px' }}>
-            Node Intelligence
+      {/* GRAPH CONTAINER */}
+      <div className="card" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+            <h2 style={{ display: 'flex', alignItems: 'center', gap: '10px', margin: 0 }}>
+                <Network size={24} /> Vendor Network Graph
+            </h2>
+        </div>
+        
+        <div style={{ flex: 1, border: '1px solid #e2e8f0', borderRadius: '8px', background: '#f8fafc', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          {!selectedVendorId ? (
+              <div style={{ color: '#94a3b8', textAlign: 'center' }}>
+                  <Network size={48} style={{ opacity: 0.5, marginBottom: '15px' }} />
+                  <p>Select a vendor from the list to display their graph.</p>
+              </div>
+          ) : loadingGraph ? (
+              <div>Loading graph data...</div>
+          ) : (
+              <CytoscapeComponent 
+                elements={elements} 
+                style={{ width: '100%', height: '100%' }} 
+                stylesheet={style}
+                layout={{ 
+                    name: 'cose',
+                    idealEdgeLength: 100,
+                    nodeOverlap: 20,
+                    refresh: 20,
+                    fit: true,
+                    padding: 30,
+                    randomize: false,
+                    componentSpacing: 100,
+                    nodeRepulsion: 400000,
+                    edgeElasticity: 100,
+                    nestingFactor: 5
+                }} 
+                cy={(cy) => {
+                    cyRef.current = cy;
+                }}
+              />
+          )}
+        </div>
+      </div>
+
+      {/* PROJECTS PANEL (RIGHT SIDEBAR) */}
+      <div className="card" style={{ width: '350px', display: 'flex', flexDirection: 'column' }}>
+        <h3 style={{ borderBottom: '1px solid #e2e8f0', paddingBottom: '10px', margin: '0 0 10px 0' }}>
+            Vendor Projects
         </h3>
         
-        {!selectedNode ? (
+        {!selectedVendorId ? (
             <div style={{ textAlign: 'center', color: '#94a3b8', marginTop: '50px' }}>
                 <Search size={48} style={{ opacity: 0.5, marginBottom: '15px' }} />
-                <p>Select a node in the graph to view intelligence details.</p>
+                <p>Select a vendor to view their projects.</p>
             </div>
         ) : (
-            <div>
-                <div style={{ 
-                    display: 'inline-block',
-                    padding: '4px 10px', 
-                    background: selectedNode.type === 'mp' ? '#fee2e2' : '#dbeafe',
-                    color: selectedNode.type === 'mp' ? '#991b1b' : '#1e40af',
-                    borderRadius: '12px',
-                    fontSize: '12px',
-                    fontWeight: 'bold',
-                    marginBottom: '15px'
-                }}>
-                    {selectedNode.type === 'mp' ? 'Member of Parliament' : 'Contractor / Vendor'}
-                </div>
-                
-                <h2 style={{ fontSize: '20px', marginBottom: '20px', wordBreak: 'break-word' }}>
-                    {selectedNode.label}
-                </h2>
-
-                {selectedNode.type === 'vendor' && (
-                    <>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
-                            <div style={{ background: '#f1f5f9', padding: '10px', borderRadius: '8px', flex: 1 }}>
-                                <div style={{ fontSize: '12px', color: '#64748b', display: 'flex', alignItems: 'center', gap: '5px' }}>
-                                    <IndianRupee size={14} /> Total Payout
-                                </div>
-                                <div style={{ fontSize: '18px', fontWeight: 'bold' }}>
-                                    ₹{(selectedNode.payout || 0).toLocaleString('en-IN')}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
-                            <div style={{ background: '#f1f5f9', padding: '10px', borderRadius: '8px', flex: 1 }}>
-                                <div style={{ fontSize: '12px', color: '#64748b', display: 'flex', alignItems: 'center', gap: '5px' }}>
-                                    <Users size={14} /> Connected MPs
-                                </div>
-                                <div style={{ fontSize: '18px', fontWeight: 'bold' }}>
-                                    {selectedNode.mp_count || 1}
-                                </div>
-                            </div>
-                        </div>
-
-                        {selectedNode.mp_count > 1 && (
-                            <div style={{ padding: '15px', background: '#fef2f2', border: '1px solid #fca5a5', borderRadius: '8px', color: '#991b1b', fontSize: '14px' }}>
-                                <strong>⚠️ Syndicate Risk:</strong> This vendor serves multiple MPs, indicating a potential monopoly or cartel arrangement in the region.
-                            </div>
-                        )}
-                    </>
-                )}
-                
-                {selectedNode.type === 'mp' && (
-                    <div style={{ fontSize: '14px', color: '#475569' }}>
-                        <p>This node represents a Member of Parliament.</p>
-                        <p>In the graph, you can see all contractors (blue circles) who have received funds authorized by this MP.</p>
-                        <p>Heavy lines indicate larger transaction volumes.</p>
+            <div style={{ flex: 1, overflowY: 'auto' }}>
+                {vendorProjects.length === 0 ? (
+                    <div style={{ color: 'var(--text-light)', fontSize: '14px', textAlign: 'center', marginTop: '20px' }}>
+                        No projects found for this vendor.
                     </div>
+                ) : (
+                    vendorProjects.map(p => (
+                        <div key={p.id} style={{ padding: '12px', borderBottom: '1px solid #e2e8f0', fontSize: '14px' }}>
+                            <div style={{ fontWeight: 'bold', marginBottom: '5px' }}>{p.work_name}</div>
+                            <div style={{ color: 'var(--text-light)' }}>ID: {p.id}</div>
+                            <div style={{ color: 'var(--text-light)' }}>Final Amount: ₹{Number(p.final_amount).toLocaleString('en-IN')}</div>
+                            <div style={{ color: 'var(--text-light)' }}>MP: {p.mp_name || 'Unknown'}</div>
+                        </div>
+                    ))
                 )}
             </div>
         )}
