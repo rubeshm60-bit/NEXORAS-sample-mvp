@@ -15,6 +15,13 @@ import hashlib
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
 from backend.ingestion.loader import load_mp_summary, load_completed_works, load_expenditures, load_recommended_works
+# NEW: Load directly from MongoDB
+from backend.ingestion.mongo_fetch import (
+    load_mp_summary_from_mongo as load_mp_summary,
+    load_completed_works_from_mongo as load_completed_works,
+    load_recommended_works_from_mongo as load_recommended_works,
+    load_expenditures_from_mongo as load_expenditures,
+)
 from backend.cleaning.cleaner import clean_mp_summary, clean_completed_works, clean_recommended_works, clean_expenditures
 
 from backend.engine.isolation_forest import MPIsolationForest, WorkIsolationForest
