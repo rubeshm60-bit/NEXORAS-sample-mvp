@@ -69,7 +69,7 @@ def get_dashboard_summary(db: Session = Depends(get_db)):
 @app.get("/projects", response_model=schemas.PaginatedProjects)
 def get_projects(
     skip: int = Query(0, ge=0), 
-    limit: int = Query(50, le=100),
+    limit: int = Query(5000),
     risk_tier: str = None,
     db: Session = Depends(get_db)
 ):
@@ -96,7 +96,7 @@ def get_project(project_id: str, db: Session = Depends(get_db)):
     return project
 
 @app.get("/anomalies", response_model=schemas.PaginatedProjects)
-def get_anomalies(skip: int = 0, limit: int = 50, db: Session = Depends(get_db)):
+def get_anomalies(skip: int = 0, limit: int = 5000, db: Session = Depends(get_db)):
     query = db.query(Project).join(Project.risk_score).filter(
         ProjectRiskScore.risk_tier.in_(["CRITICAL_RISK", "HIGH_RISK"])
     ).order_by(ProjectRiskScore.unified_score.desc())
@@ -112,7 +112,7 @@ def get_anomalies(skip: int = 0, limit: int = 50, db: Session = Depends(get_db))
     }
 
 @app.get("/vendors", response_model=schemas.PaginatedVendors)
-def get_vendors(skip: int = 0, limit: int = 50, db: Session = Depends(get_db)):
+def get_vendors(skip: int = 0, limit: int = 5000, db: Session = Depends(get_db)):
     query = db.query(Vendor).order_by(Vendor.total_payout.desc())
     total = query.count()
     vendors = query.offset(skip).limit(limit).all()
