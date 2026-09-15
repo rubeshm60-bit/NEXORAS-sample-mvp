@@ -44,7 +44,7 @@ export default function VendorIntelligence() {
           </tr>
         </thead>
         <tbody>
-          {vendors.map(v => (
+          {vendors.slice(0, 100).map(v => (
             <tr key={v.id}>
               <td>{v.name}</td>
               <td>₹{v.total_payout.toLocaleString('en-IN')}</td>
@@ -64,6 +64,11 @@ export default function VendorIntelligence() {
           )}
         </tbody>
       </table>
+      {vendors.length > 100 && (
+        <div style={{textAlign: 'center', marginTop: '15px', padding: '10px', color: '#64748b'}}>
+          Showing Top 100 of {vendors.length} loaded records for maximum performance.
+        </div>
+      )}
     </div>
   );
 }

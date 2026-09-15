@@ -50,7 +50,7 @@ export default function ProjectExplorer({ filterAnomalies = false }) {
           </tr>
         </thead>
         <tbody>
-          {projects.map(p => (
+          {projects.slice(0, 100).map(p => (
             <tr key={p.id}>
               <td>{p.id}</td>
               <td style={{maxWidth: '300px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{p.work_name}</td>
@@ -71,6 +71,11 @@ export default function ProjectExplorer({ filterAnomalies = false }) {
           )}
         </tbody>
       </table>
+      {projects.length > 100 && (
+        <div style={{textAlign: 'center', marginTop: '15px', padding: '10px', color: '#64748b'}}>
+          Showing Top 100 of {projects.length} loaded records for maximum performance.
+        </div>
+      )}
     </div>
   );
 }
