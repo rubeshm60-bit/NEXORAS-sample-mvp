@@ -77,7 +77,7 @@ def run():
         rw_df = pd.DataFrame()
 
     # Limit pipeline to first 500 projects for MVP speed
-    cw_df = cw_df.head(500).copy()
+    #cw_df = cw_df.head(500).copy()
     
     # ──────────────────────────────────────────────────────
     # IMPROVEMENT 1: Real NLP Contract Splitting Engine
