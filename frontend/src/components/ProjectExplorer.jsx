@@ -5,17 +5,24 @@ import axios from 'axios';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 
+let projectCache = { projects: null, anomalies: null };
+
 export default function ProjectExplorer({ filterAnomalies = false }) {
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const cacheKey = filterAnomalies ? 'anomalies' : 'projects';
+  const [projects, setProjects] = useState(projectCache[cacheKey] || []);
+  const [loading, setLoading] = useState(!projectCache[cacheKey]);
 
   useEffect(() => {
+    // If we already downloaded the 5000 rows, skip the fetch! Instant loading.
+    if (projectCache[cacheKey]) return;
+
     const url = filterAnomalies 
       ? `${API_URL}/anomalies?limit=5000` 
       : `${API_URL}/projects?limit=5000`;
       
     axios.get(url)
       .then(res => {
+        projectCache[cacheKey] = res.data.items; // Save to memory
         setProjects(res.data.items);
         setLoading(false);
       })

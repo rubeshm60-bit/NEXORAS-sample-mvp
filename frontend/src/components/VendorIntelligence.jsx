@@ -4,13 +4,19 @@ import axios from 'axios';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 
+let vendorCache = null;
+
 export default function VendorIntelligence() {
-  const [vendors, setVendors] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [vendors, setVendors] = useState(vendorCache || []);
+  const [loading, setLoading] = useState(!vendorCache);
 
   useEffect(() => {
+    // If we already downloaded the massive vendor list, load instantly!
+    if (vendorCache) return;
+
     axios.get(`${API_URL}/vendors?limit=5000`)
       .then(res => {
+        vendorCache = res.data.items; // Save to memory
         setVendors(res.data.items);
         setLoading(false);
       })
