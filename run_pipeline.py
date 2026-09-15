@@ -301,6 +301,7 @@ def run():
             )
             if not db.query(Vendor).filter_by(id=vendor.id).first():
                 db.add(vendor)
+        db.flush() # CRITICAL: Flush to DB so the next loop can find them!
     
     # Seed Vendor Risk Profiles from real VendorNetworkIntelligence
     if vendor_intel.vendor_profiles_df is not None and not vendor_intel.vendor_profiles_df.empty:

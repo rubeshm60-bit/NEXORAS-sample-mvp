@@ -148,18 +148,18 @@ def get_vendor_projects(vendor_id: str, db: Session = Depends(get_db)):
         mps = db.query(MP).offset(offset).limit(target_mp_count).all()
         mp_ids = [mp.id for mp in mps]
         
-        # Grab up to 20 projects belonging to these connected MPs
-        projects = db.query(Project).filter(Project.mp_id.in_(mp_ids)).limit(20).all()
+        # Fetch up to 10 projects for EACH MP so no MP is left empty when clicked
+        projects = []
+        for mp in mps:
+            mp_projs = db.query(Project).filter(Project.mp_id == mp.id).limit(10).all()
+            projects.extend(mp_projs)
         
         # If STILL empty (because the randomly selected MPs have no projects), mock it
         if not projects and mps:
-            projects = db.query(Project).limit(5).all()
+            projects = db.query(Project).limit(10).all()
             # Force the mocked projects to appear under this MP for the demo
             for i, p in enumerate(projects):
                 p.mp_id = mps[i % len(mps)].id
-                # Note: We rely on the frontend or schema to handle mp_name.
-                # Since schema uses property or fallback, we can dynamically override it in dict if needed,
-                # but we'll just set a temporary attribute and return. The schema reads from p.mp.mp_name.
                 p.mp = mps[i % len(mps)]
     else:
         projects = db.query(Project).filter(Project.id.in_(project_ids)).all()
