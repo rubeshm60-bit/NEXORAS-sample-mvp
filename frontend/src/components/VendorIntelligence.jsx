@@ -9,7 +9,7 @@ export default function VendorIntelligence() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`${API_URL}/vendors?limit=50`)
+    axios.get(`${API_URL}/vendors?limit=5000`)
       .then(res => {
         setVendors(res.data.items);
         setLoading(false);

@@ -11,8 +11,8 @@ export default function ProjectExplorer({ filterAnomalies = false }) {
 
   useEffect(() => {
     const url = filterAnomalies 
-      ? `${API_URL}/anomalies?limit=50` 
-      : `${API_URL}/projects?limit=50`;
+      ? `${API_URL}/anomalies?limit=5000` 
+      : `${API_URL}/projects?limit=5000`;
       
     axios.get(url)
       .then(res => {
