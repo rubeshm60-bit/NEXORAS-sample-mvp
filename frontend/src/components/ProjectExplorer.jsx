@@ -13,9 +13,15 @@ export default function ProjectExplorer({ filterAnomalies = false }) {
   const [loading, setLoading] = useState(!projectCache[cacheKey]);
 
   useEffect(() => {
-    // If we already downloaded the 5000 rows, skip the fetch! Instant loading.
-    if (projectCache[cacheKey]) return;
+    // 1. If we already downloaded the data, update the screen instantly!
+    if (projectCache[cacheKey]) {
+      setProjects(projectCache[cacheKey]);
+      setLoading(false);
+      return;
+    }
 
+    // 2. Otherwise, show loading and fetch from backend
+    setLoading(true);
     const url = filterAnomalies 
       ? `${API_URL}/anomalies?limit=5000` 
       : `${API_URL}/projects?limit=5000`;
