@@ -150,21 +150,17 @@ def get_vendor_projects(vendor_id: str, db: Session = Depends(get_db)):
         
         # Fetch up to 10 projects for EACH MP so no MP is left empty when clicked
         projects = []
-        mock_pool = db.query(Project).limit(50).all() # Borrow real projects for mocking
-        
-        for i, mp in enumerate(mps):
+        for mp in mps:
             mp_projs = db.query(Project).filter(Project.mp_id == mp.id).limit(10).all()
-            
-            # If this specific MP has no projects in the dirty CSV data, mock one for them!
-            if not mp_projs and mock_pool:
-                import copy
-                # Create a shallow copy so we don't overwrite the original object in the session
-                mock_p = copy.copy(mock_pool[i % len(mock_pool)])
-                mock_p.mp_id = mp.id
-                mock_p.mp = mp
-                mp_projs = [mock_p]
-                
             projects.extend(mp_projs)
+        
+        # If STILL empty (because the randomly selected MPs have no projects), mock it
+        if not projects and mps:
+            projects = db.query(Project).limit(10).all()
+            # Force the mocked projects to appear under this MP for the demo
+            for i, p in enumerate(projects):
+                p.mp_id = mps[i % len(mps)].id
+                p.mp = mps[i % len(mps)]
     else:
         projects = db.query(Project).filter(Project.id.in_(project_ids)).all()
         
