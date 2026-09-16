@@ -333,13 +333,31 @@ def trigger_ingestion():
     return {"message": f"Successfully processed {processed_count} files in the cloud"}
 
 @app.post("/ingestion/reset")
-def reset_ingestion():
-    """Resets the demo by moving files from processed back to inbox."""
+def reset_ingestion(db: Session = Depends(get_db)):
+    """Resets the demo by moving files from processed back to inbox AND deleting the auto-ingested DB rows."""
     import shutil
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
     inbox = os.path.join(base_dir, 'data', 'inbox')
     processed = os.path.join(base_dir, 'data', 'processed')
     
+    # 1. Reset Database Rows
+    from backend.db.models import Project, ProjectRiskScore
+    try:
+        # Find all auto-ingested projects
+        auto_projects = db.query(Project).filter(Project.id.like("AUTO_%")).all()
+        auto_ids = [p.id for p in auto_projects]
+        
+        if auto_ids:
+            # Delete their risk scores first to avoid foreign key constraints
+            db.query(ProjectRiskScore).filter(ProjectRiskScore.project_id.in_(auto_ids)).delete(synchronize_session=False)
+            # Then delete the projects themselves
+            db.query(Project).filter(Project.id.in_(auto_ids)).delete(synchronize_session=False)
+            db.commit()
+    except Exception as e:
+        db.rollback()
+        print(f"Failed to reset database: {e}")
+    
+    # 2. Reset Files
     os.makedirs(inbox, exist_ok=True)
     reset_count = 0
     
@@ -353,4 +371,4 @@ def reset_ingestion():
                 except Exception as e:
                     print(f"Failed to reset {fname}: {e}")
                     
-    return {"message": f"Successfully reset {reset_count} files for the demo"}
+    return {"message": f"Successfully reset {reset_count} files and cleared DB cache for the demo"}
